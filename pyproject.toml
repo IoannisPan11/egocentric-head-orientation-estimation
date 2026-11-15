@@ -1,0 +1,35 @@
+[project]
+name = "egocentric-head-orientation-estimation"
+version = "0.1.0"
+description = "Code for the MSc thesis on head orientation change estimation from first-person RGB video"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11,<3.13"
+dependencies = []
+
+# Reconstructed environment.
+# The original environments (Windows workstation for preprocessing, `thesis-gpu`
+# micromamba environment on the TU Wien dataLAB cluster for training) are no longer
+# accessible, so the exact package versions are unknown. The PyTorch version is
+# constrained by the code and the saved checkpoint:
+#   - the training scripts use torch.amp.GradScaler("cuda"), available from PyTorch 2.3;
+#   - the checkpoint metadata indicates a PyTorch 2.x release older than 2.6.
+# PyTorch 2.5.1 / torchvision 0.20.1 is therefore used. The other packages are
+# bounded to major versions compatible with that release.
+[dependency-groups]
+preprocessing = [
+    "matplotlib>=3.8,<4",
+    "numpy>=1.26,<2.3",
+    "opencv-python>=4.9,<5",
+    "pandas>=2.2,<3",
+    "pyarrow>=15",
+]
+training = [
+    "matplotlib>=3.8,<4",
+    "numpy>=1.26,<2.3",
+    "opencv-python>=4.9,<5",
+    "pandas>=2.2,<3",
+    "pillow>=10",
+    "torch==2.5.1",
+    "torchvision==0.20.1",
+]
