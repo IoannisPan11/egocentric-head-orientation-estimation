@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the thesis below."
+title: "Head Orientation Change Estimation from First-Person RGB Video"
+type: software
+authors:
+  - family-names: Panagiotopoulos
+    given-names: Ioannis
+license: MIT
+repository-code: "https://github.com/IoannisPan11/egocentric-head-orientation-estimation"
+preferred-citation:
+  type: thesis
+  thesis-type: "Master's thesis"
+  title: "Deep Learning-Based Head Orientation Change Estimation from First-Person RGB Video Data"
+  authors:
+    - family-names: Panagiotopoulos
+      given-names: Ioannis
+  institution:
+    name: "National Technical University of Athens"
+  year: 2026
+  # TODO: add the NTUA DSpace URL after publication, e.g.
+  # url: "https://dspace.lib.ntua.gr/..."
