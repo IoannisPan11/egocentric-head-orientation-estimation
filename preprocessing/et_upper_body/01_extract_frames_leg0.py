@@ -1,23 +1,33 @@
 r"""
-01_extract_world_frames_upper_body.py
+01_extract_frames_leg0.py
+
+Extracts the frames of the leg0 recordings (exported in step 00) as JPEG images, using OpenCV.
+
+Thesis step : Frame extraction (Section 3.2.2)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+Note        : "leg0" is the naming used in the code and folders; it corresponds to
+              "video0 (leg1)" in the thesis.
 
 Purpose
-- Extract per-frame images from the Neon "world" video for every recording under ROOT,
+- Extract per-frame images from the scene-camera ("world") video of the Pupil Labs Invisible glasses
+  for every recording under ROOT,
   using the timestamps exported by `pl-rec-export` in: <recording_root>\export\world.csv.
 
-Why this version (fixes your exact errors)
-- Your `pl-rec-export` world.csv is the NEW format with a real header row and 4 columns:
+world.csv format and video lookup
+- The `pl-rec-export` world.csv is the NEW format with a real header row and 4 columns:
     file, timestamp [ns], recording offset [secs], video offset [secs]
   (NOT the older "timestamps [seconds],pts" format).
 - This script reads that NEW format correctly and *also* supports the older 2-column format as fallback.
-- It fixes the “Cannot open video ... .time” bug by **never treating *.time as a video**.
-  If the CSV 'file' points to a .time, we auto-map it to the matching .mp4 (same basename).
+- A *.time file is never treated as a video: if the CSV 'file' column points to a .time file, the
+  matching .mp4 (same basename) is used instead. This avoids "Cannot open video ... .time" errors.
 
 Expected layout
 - pl-rec-export output:
     <recording_root>\export\world.csv
 - The video typically lives in <recording_root>\world.mp4 or <recording_root>\Neon Scene Camera v1 ps1.mp4
-  BUT we primarily use the full path stored in world.csv column "file" (if it points to an .mp4).
+  (the Neon-style name that step 00 gives to the Invisible video, because pl-rec-export expects it),
+  but the full path stored in the world.csv column "file" is used first (if it points to an .mp4).
 
 Outputs
 - Frames:
@@ -50,7 +60,9 @@ ROOT = r"D:\upper_body_sync_2"
 EXPORT_DIR_NAME = "export"
 WORLD_CSV_NAME = "world.csv"
 
-# Fallback video names if the CSV "file" column is missing/unusable
+# Fallback video names if the CSV "file" column is missing/unusable.
+# "Neon Scene Camera v1 ps1.mp4" is the Neon-style name given to the Invisible video in step 00,
+# because pl-rec-export expects it.
 VIDEO_NAME_PRIMARY = "Neon Scene Camera v1 ps1.mp4"
 VIDEO_NAME_FALLBACK = "world.mp4"
 

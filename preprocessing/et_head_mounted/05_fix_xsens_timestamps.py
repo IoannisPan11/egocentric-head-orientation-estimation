@@ -1,5 +1,11 @@
 """
-05_fix_ts_ns_best_all.py
+05_fix_xsens_timestamps.py
+
+Makes sure that every merged Xsens file (step 04) has a usable time axis in `ts_ns_best`.
+
+Thesis step : Time synchronization (Section 3.2.4)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Ensure every `*_merged.parquet` file has a usable time axis in `ts_ns_best`.

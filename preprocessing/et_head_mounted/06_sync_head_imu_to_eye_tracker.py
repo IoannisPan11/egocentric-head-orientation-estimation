@@ -1,14 +1,20 @@
 """
-06_sync_head_imu_to_et_with_offsets.py
+06_sync_head_imu_to_eye_tracker.py
+
+Shifts the head-IMU (Xsens) timestamps onto the eye-tracker timeline using the per-recording offsets
+from step 01, and writes one compact CSV per recording.
+
+Thesis step : Time synchronization (Section 3.2.4)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Synchronize head-mounted IMU time to the ET/world timeline using per-recording offsets from
   `offsets_master.csv`, and export a lightweight per-recording CSV (timestamp + Euler angles).
 
-Core definition (sign convention)
-- The offsets are defined as:
-    offset_ns = t_et - t_head
-  Therefore head timestamps aligned to the ET timeline are computed as:
+Time shift
+- Every head-IMU timestamp is shifted by the offset of its recording, as stored in the `offset_ns`
+  column of `offsets_master.csv` (computed in step 01):
     t_head_sync = t_head + offset_ns
 
 What it does

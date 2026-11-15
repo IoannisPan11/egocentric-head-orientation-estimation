@@ -75,7 +75,7 @@ The *no-change* reference assumes zero head motion between consecutive frames. T
 
 ```
 ├── preprocessing/
-│   ├── et_head_mounted/   # Preprocessing of the dataset used in the thesis (steps 00–09)
+│   ├── et_head_mounted/   # Preprocessing of the dataset used in the thesis (steps 00–10)
 │   └── et_upper_body/     # Preprocessing of the second dataset (explored, not used for the final model)
 ├── training/              # Model, datasets, splits, and the original experiment scripts
 │   └── experiments/       # One folder per experiment (Sections 5.2–5.9 of the thesis)
@@ -89,10 +89,10 @@ Each top-level folder has its own README with details.
 
 ## Provenance of the code
 
-All scripts are published **exactly as they were run** for the thesis, with no refactoring, so that the published code is the code that produced the reported results.
+The **executable code is the code that was run** for the thesis; it has not been refactored. For readability, scripts were renamed and their docstrings and comments were rewritten in English. An automated comparison of the code before and after (Python AST, PowerShell non-comment lines) confirms that the executable code did not change, apart from two documented one-line corrections. The first commit keeps the original upload. See [`preprocessing/README.md`](preprocessing/README.md#changes-since-the-original-upload) for the details.
 
 - **Preprocessing** ran on a Windows workstation at TU Wien. The scripts contain the original local paths.
-- **Frame resizing, training, and evaluation** ran on the TU Wien **dataLAB** cluster (SLURM, NVIDIA A100). The original SLURM launch scripts are included unchanged.
+- **Frame resizing, training, and evaluation** ran on the TU Wien **dataLAB** cluster (SLURM, NVIDIA A100). The original SLURM launch scripts are included.
 
 Because the scripts contain hard-coded paths of the original machines, the Docker setup mounts the data at the original locations instead of modifying the code. See [`docs/reproducibility.md`](docs/reproducibility.md) for details. It also covers what can and cannot be reproduced exactly (e.g., GPU non-determinism).
 

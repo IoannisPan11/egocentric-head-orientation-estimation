@@ -1,5 +1,12 @@
 """
-03_txt_ahs_on_to_parts_all.py
+03_convert_xsens_txt_to_parquet.py
+
+Converts the raw text exports of the Xsens MTi-300 head IMU into Parquet part files with
+standardized timestamp columns.
+
+Thesis step : Angle extraction (Section 3.2.3)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Convert raw Xsens text exports (`*_AHS_ON.txt`) into Parquet "part" files using streaming reads,

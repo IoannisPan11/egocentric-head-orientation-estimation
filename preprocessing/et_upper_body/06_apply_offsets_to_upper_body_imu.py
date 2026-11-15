@@ -1,7 +1,13 @@
-from __future__ import annotations
-
 """
-06_duplicate_allinone_and_add_upper_world_epoch_ns_FILTERED.py
+06_apply_offsets_to_upper_body_imu.py
+
+Applies the synchronization offsets of step 05 to the Xsens Awinda upper-body IMU files and adds a
+timestamp on the eye-tracker timeline (`upper_world_epoch_ns`). Writes filtered copies; the
+original files are not modified.
+
+Thesis step : Time synchronization (Section 3.2.4)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Read offsets from: D:\\upper_body_sync_2\\offsets_master_upper_DONE.csv
@@ -12,9 +18,9 @@ Purpose
     - write a DUPLICATE filtered CSV under:
         D:\\upper_body_sync_2\\imu\\pXX\\leg_k_allInOne_aligned.csv
       containing ONLY the whitelist columns + new:
-        upper_world_epoch_ns = ms*1e6 - offset_ns
+        upper_world_epoch_ns = ms*1e6 + offset_ns
 
-Critical constraints (as requested)
+Leg selection
 - NEVER process leg_1 for ANY participant.
 - Default allowed legs: {2,3,4}.
 - Special cases:
@@ -27,6 +33,8 @@ Notes
 - Never modifies originals in E:\\...
 - Writes log CSV: D:\\upper_body_sync_2\\imu\\_apply_offset_log.csv
 """
+
+from __future__ import annotations
 
 import re
 from pathlib import Path
@@ -291,7 +299,7 @@ def main() -> None:
                     out_df["ms"] = df[ms_col]
 
                 # Compute NEW_COL using numeric ms
-                out_df[NEW_COL] = (ms * 1_000_000.0 - float(offset_ns)).round().astype("Int64")
+                out_df[NEW_COL] = (ms * 1_000_000.0 + float(offset_ns)).round().astype("Int64")
 
                 # Final column order: whitelist (that exists) + NEW_COL at end
                 final_cols = [c for c in KEEP_COLS if c in out_df.columns]

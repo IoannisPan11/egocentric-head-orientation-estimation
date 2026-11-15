@@ -1,7 +1,12 @@
 """
-07_add_head_epoch_all.py
+07_add_epoch_timestamps.py
 
-Add epoch timestamps to synced head-IMU CSVs using the ET/world recording start time.
+Adds epoch timestamps to the synchronized head-IMU CSVs (step 06), anchored to the timestamp of the
+first video frame of the recording.
+
+Thesis step : Time synchronization (Section 3.2.4)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Convert per-recording head IMU timestamps that are currently in a recording-relative time axis

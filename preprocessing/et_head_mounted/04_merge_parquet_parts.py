@@ -1,8 +1,14 @@
 """
-04_merge_all_parts_to_merged_parquet.py
+04_merge_parquet_parts.py
+
+Merges the Parquet part files of each Xsens recording (step 03) into a single Parquet file.
+
+Thesis step : Angle extraction (Section 3.2.3)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
 
 Purpose
-- Merge Parquet "part" files (produced by `txt_ahs_on_to_parts_all.py`) into a single merged Parquet
+- Merge Parquet "part" files (produced by `03_convert_xsens_txt_to_parquet.py`) into a single merged Parquet
   per recording/stream, using streaming writes to avoid loading everything into memory.
 
 What it does

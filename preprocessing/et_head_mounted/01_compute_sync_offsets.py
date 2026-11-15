@@ -1,7 +1,18 @@
 """
 
-01_fill_offsets_master.py
-Fill offsets_master.csv (auto) from a manually picked phone timestamp and frame index.
+01_compute_sync_offsets.py
+
+Computes the per-recording clock offset that is used to synchronize the IMU data with the scene
+video, from a manually read clock time and the frame in which that clock is visible.
+
+Thesis step : Time synchronization (Section 3.2.4)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
+
+Manual inputs
+- For every recording, two values are entered by hand in `offsets_master.csv`:
+    frame_no_phone : the video frame in which the phone clock (the common time reference) is visible
+    phone_time_str : the time shown on that clock in this frame
 
 Purpose
 - Populate (or complete) per-recording synchronization offsets in `results/offsets_master.csv` by:
@@ -153,8 +164,8 @@ def ok(v) -> bool:
 
 
 def is_filled(row: dict) -> bool:
-    # θεωρούμε "filled" αν έχει offset_ns κλπ.
-    # αλλά αν offset_sec λείπει, θα το συμπληρώσουμε χωρίς να ξανακάνουμε compute όλα.
+    # A row counts as "filled" if it already has offset_ns etc.
+    # If only offset_sec is missing, it is filled in without recomputing everything.
     return ok(row.get("manual_imu_ts_ns")) and ok(row.get("world_ts_ns")) and ok(row.get("offset_ns"))
 
 
@@ -203,13 +214,13 @@ def main() -> None:
 
         has_inputs = frame_str != "" and phone_str != ""
 
-        # περίπτωση 1: δεν έχεις βάλει ακόμα frame + phone → skip
+        # Case 1: frame number and phone time not entered yet -> skip
         if not has_inputs:
             skipped += 1
             continue
 
         try:
-            # Αν έχει ήδη offset_ns κλπ και δεν κάνουμε FORCE, απλά συμπλήρωσε offset_sec αν λείπει
+            # Already computed and FORCE_RECALC is off: only fill offset_sec if it is missing
             if is_filled(row) and not FORCE_RECALC:
                 if not ok(row.get("offset_sec")):
                     off_ns = int(row["offset_ns"])
@@ -222,7 +233,7 @@ def main() -> None:
                     skipped += 1
                 continue
 
-            # αλλιώς πλήρης υπολογισμός
+            # Otherwise: full computation
             rec_path = Path(rec_path_str)
             if not rec_path.exists():
                 raise FileNotFoundError(f"rec_path not found: {rec_path}")

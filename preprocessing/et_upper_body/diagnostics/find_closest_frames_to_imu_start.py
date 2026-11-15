@@ -1,3 +1,29 @@
+"""
+find_closest_frames_to_imu_start.py
+
+Diagnostic: for every participant and leg, finds the video frame whose timestamp is closest to the
+first sample of the synchronized upper-body IMU file. Not part of the pipeline.
+
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+
+What it does
+1) Takes the participants that exist both in IMU_ROOT (aligned IMU files of step 06) and in
+   FRAMES_ROOT (frames of step 03).
+2) Maps the frames folders of each participant to legs 2, 3, 4 (with the same two-folder overrides
+   for p33 and p103 as step 08).
+3) Reads the first value of the last column of leg_<k>_allInOne_aligned.csv, which is
+   `upper_world_epoch_ns` (the column added in step 06).
+4) Reads the frame timestamps from the frame file names and finds the closest frame.
+5) Prints a summary table (first IMU timestamp, closest frame, first and last frame) and, per row,
+   the file paths and the absolute time difference.
+
+Notes
+- The script prints its results and does not write a file. `closest_frames_report.csv` in this folder
+  contains the same check in CSV form, written by a variant of this script that is not included in
+  the repository.
+"""
+
 from __future__ import annotations
 
 import csv

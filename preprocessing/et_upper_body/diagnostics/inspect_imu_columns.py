@@ -1,5 +1,10 @@
 """
-Quick schema inspection for upper-body IMU all-in-one CSV.
+inspect_imu_columns.py
+
+Diagnostic: quick schema inspection of one upper-body IMU all-in-one CSV. Not part of the pipeline.
+
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Explore and validate the column structure of a merged upper-body IMU export

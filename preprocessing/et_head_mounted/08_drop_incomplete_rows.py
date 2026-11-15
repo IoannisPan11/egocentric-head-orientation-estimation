@@ -1,5 +1,11 @@
 """
-08_clean_head_epoch_csvs.py
+08_drop_incomplete_rows.py
+
+Removes head-IMU rows with missing angles or missing epoch timestamps (output of step 07).
+
+Thesis step : Time synchronization (Section 3.2.4)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Clean head IMU epoch-aligned CSV files by removing rows with missing orientation

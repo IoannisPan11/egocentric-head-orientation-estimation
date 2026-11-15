@@ -1,5 +1,20 @@
 <#
-00_export_pl_rec_for_log0.ps1
+00_export_recordings_leg0.ps1
+
+Exports the leg0 eye-tracker recordings of the ET - Upper Body dataset with pl-rec-export, working on
+copies so that the raw recordings are never modified.
+
+Thesis step : Frame extraction (Section 3.2.2)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien (PowerShell)
+Note        : "leg0" is the naming used in the code and folders; it corresponds to
+              "video0 (leg1)" in the thesis.
+
+About the "Neon" file names
+- The recordings come from Pupil Labs Invisible glasses. pl-rec-export expects the scene-camera files
+  to have the Neon-style names "Neon Scene Camera v1 ps1.mp4" / ".time", so the script renames
+  world.mp4 / world.time to these names inside the working copy. "Neon" in this script refers only to
+  these file names, not to the device that was used.
 
 Purpose
 - Safely export ET recordings using pl-rec-export across the entire
@@ -40,11 +55,11 @@ Safety
 Dependencies
 - PowerShell
 - Active .venv with pl-rec-export available in PATH
-- pl-rec-export version compatible with Neon data
+- pl-rec-export (the Invisible recordings are given Neon-style file names first, see above)
 
 Notes
-- This script assumes Neon-style recordings.
-- If world files use legacy naming, they are renamed before export.
+- The recordings are Pupil Labs Invisible recordings. If their world files use the legacy names
+  (world.mp4, world.time), they are renamed to the Neon-style names before export.
 #>
 
 $root = "D:\upper_body_sync_2"
@@ -64,6 +79,7 @@ Get-ChildItem $root -Recurse -Directory | Where-Object {
     }
 
     # 2) Rename world files inside WORK
+    #    The Invisible files get the Neon-style names that pl-rec-export expects.
     $worldTime = Join-Path $work "world.time"
     $worldMp4  = Join-Path $work "world.mp4"
 

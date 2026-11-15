@@ -1,3 +1,29 @@
+"""
+report_first_timestamps.py
+
+Diagnostic: collects the first timestamp of the frames, of the eye-tracker IMU and of the upper-body
+IMU for every participant and session, to compare their start times. Not part of the pipeline.
+
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+
+What it does
+1) Lists the participants (folders named pXX) in FRAMES_WORLD_ROOT and their session folders,
+   sorted by name.
+2) Maps the sessions in order to the upper-body legs 2, 3, 4 (SESSION_TO_UPPER_LEG_K) and numbers
+   them as legs 1, 2, 3 in the output (LEG_START = 1).
+3) For each session, reads:
+   - the timestamp of the first extracted frame (from the frame file name);
+   - the first timestamp of the best-matching eye-tracker IMU CSV (epoch ns);
+   - the first timestamp of the raw upper-body IMU file leg_<k>_allInOne.csv (epoch ms -> ns).
+   Column names are detected from lists of candidates.
+4) Writes one row per session to OUT_CSV (final_first_timestamps.csv) with the three timestamps,
+   the files used, and a status text that records which values were found.
+
+Notes
+- The upper-body timestamps are read from the raw files, before the offsets of step 06 are applied.
+"""
+
 from __future__ import annotations
 
 import csv

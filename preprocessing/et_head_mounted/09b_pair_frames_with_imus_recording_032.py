@@ -1,4 +1,39 @@
-# 09_pair_frames_with_imus.py
+"""
+09b_pair_frames_with_imus_recording_032.py
+
+Variant of step 09 for a single recording (032_LS168/trial_1_om) whose folder layout differs from the
+other recordings. This recording is part of the final dataset.
+
+Thesis step : Frame-label pairs (Section 3.2.5)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
+
+Purpose
+- Produce `paired_frames.csv` for recording 032_LS168/trial_1_om with the same pairing logic and the
+  same output columns as `09_pair_frames_with_imus.py`. The recording contains more than one
+  eye-tracker session, and its frames folder is not found automatically, so both are given
+  explicitly on the command line.
+
+Differences from step 09
+- Processes only the recording given by `--rec_key` (default: 032_LS168/trial_1_om).
+- The frames folder is passed directly with `--frames_dir`. `--frames_root` is only printed.
+- `--et_session` selects the eye-tracker session folder (e.g. 2021-12-06-08-40-37) when the
+  recording contains several sessions.
+- There is no `--tolerance_ns` option: every frame always receives the nearest IMU sample.
+- The default ET IMU column names are `roll [deg]` and `pitch [deg]` (step 09: `roll`, `pitch`).
+
+What it does
+1) Locates the head-IMU epoch CSV in `--head_root/<rec_key>/` (the largest file if there are several).
+2) Locates the eye-tracker export folder (world.csv and imu.csv), using `--et_session` if given.
+3) Pairs the world.csv frame timestamps with the sorted frame images by index
+   (n = min(number of timestamps, number of images)).
+4) Optionally drops frames outside the common ET + head time range (`--drop_outside_overlap`).
+5) For every frame, takes the nearest eye-tracker sample (roll, pitch) and the nearest head sample
+   (yaw), and the arithmetic mean of `2 * half_window + 1` samples around each of them.
+6) Writes `<out_root>/<rec_key>/paired_frames.csv` with the columns:
+     recording_name, frame_name, timestamp_ns,
+     roll_nn, pitch_nn, roll_win, pitch_win, yaw_nn, yaw_win
+"""
 from __future__ import annotations
 
 import argparse

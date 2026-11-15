@@ -1,3 +1,28 @@
+"""
+play_video_with_angles.py
+
+Diagnostic: plays a scene-camera video next to the synchronized IMU angles, to check the
+synchronization visually. Not part of the pipeline.
+
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+Recording   : participant p16, leg 2 (paths are hard-coded in the CONFIG section)
+
+What it does
+- Loads `paired_frames.csv` of one participant/leg (output of step 08) and the matching world.mp4.
+- Converts the frame timestamps to seconds, applies a manual shift (IMU_TO_VIDEO_OFFSET_S) and
+  starts the time axis at 0 so that it matches the video time.
+- Opens an interactive matplotlib window with:
+    the video frame, three time-series plots (roll, pitch, yaw of the external IMU) with a cursor
+    at the current time, and a bar chart with the current values.
+- Plays the video at PLAYBACK_SPEED and moves the cursors with it. If head movements in the video
+  and changes in the curves do not happen at the same time, the synchronization is off.
+
+Notes
+- IMU_TO_VIDEO_OFFSET_S was tuned by hand for this recording.
+- The variable IMU_TIME_COL_MS holds the column `frame_ts_ns`, which is in nanoseconds
+  (it is converted with * 1e-9).
+"""
 import os
 import cv2
 import numpy as np

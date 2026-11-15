@@ -1,5 +1,11 @@
 """
-02_sanity_check.py
+02_check_frame_rate.py
+
+Checks the effective frame rate of every recording from the frame timestamps in export/world.csv.
+
+Thesis step : Frame-rate check (Section 3.2.1)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Sanity-check the effective video/world sampling rate (FPS) per recording by analyzing the exported
@@ -33,6 +39,9 @@ Notes / Pitfalls
 - This script does NOT validate actual video FPS from the MP4; it estimates sampling density from the
   world.csv time axis.
 - The sliding-window counts reflect irregularities/gaps in timestamps (e.g., segment boundaries).
+- The summary CSVs in `outputs/` were written by this script. Their file names show the settings of
+  each run: an earlier run without the master-CSV filter (different column layout), and filtered runs
+  that use `recording offset [secs]` or `video offset [secs]` as the time axis.
 - Base-path resolution is heuristic: it tries to detect a full recording path from any master row cell,
   otherwise falls back to constructing DATASET_ROOT/participant/trial/timestamp_folder if available.
 """

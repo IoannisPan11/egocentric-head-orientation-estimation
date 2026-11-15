@@ -1,3 +1,23 @@
+"""
+check_imu_video_overlap_p112_leg4.py
+
+Diagnostic: checks whether the upper-body IMU recording and the eye-tracker video of one
+participant/leg overlap in time. Not part of the pipeline.
+
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+Recording   : participant p112, leg 4 (paths are hard-coded)
+
+What it does
+- Reads leg_4_allInOne.csv (raw upper-body IMU, column `ms` in epoch milliseconds) and the
+  world_timestamps.csv of the matching eye-tracker recording (column `timestamp [ns]`).
+- Prints the unique values of the `fn` column, the start, end and duration of both recordings,
+  the absolute difference between their start times, and the length of their time overlap.
+- Used to investigate a suspected synchronization error for this participant.
+
+Notes
+- The original file name said "p122", but the script checks participant p112.
+"""
 from pathlib import Path
 import pandas as pd
 

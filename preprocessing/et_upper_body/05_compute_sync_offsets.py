@@ -1,9 +1,17 @@
 r"""
-06_fill_offsets_master_upper_body.py
+05_compute_sync_offsets.py
+
+Computes, for every participant, the clock offset between a manually read clock time and the
+eye-tracker video timeline. The offsets are applied to the upper-body IMU data in step 06.
+
+Thesis step : Time synchronization (Section 3.2.4)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+Note        : For this dataset, synchronization was done once per participant (thesis Section 3.2.4).
 
 Purpose
 - Fill / compute synchronization offsets between:
-  (A) manual phone time (entered by you as phone_time_str)
+  (A) manual phone time (entered manually as phone_time_str)
   (B) ET world timeline timestamps exported by pl-rec-export (world.csv)
 - Produces a completed offsets CSV:
     offsets_master_upper.csv -> offsets_master_upper_done.csv

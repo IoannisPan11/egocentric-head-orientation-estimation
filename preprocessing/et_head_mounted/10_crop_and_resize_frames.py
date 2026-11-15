@@ -1,3 +1,45 @@
+"""
+10_crop_and_resize_frames.py
+
+Center-crops every labeled frame to a square and resizes it to 512 x 512 pixels, the input size of
+the model.
+
+Thesis step : Crop and resize (Section 3.2.6)
+Dataset     : ET - Head Mounted
+Run on      : TU Wien dataLAB cluster, as a SLURM CPU job (see 10_crop_and_resize_frames.sh).
+              Unlike steps 00-09, this step ran on the cluster, after the extracted frames and the
+              paired_frames.csv files had been uploaded there.
+
+Purpose
+- Convert the 1088 x 1080 scene-camera frames into 512 x 512 model inputs. Only frames that have a
+  label in paired_frames.csv are processed.
+
+What it does
+1) Finds every `paired_frames.csv` (output of step 09) with the layout
+     <BASE>/<LS>/<trial>/paired_frames.csv
+2) For each file, reads `recording_name` (<LS>/<trial>) and `frame_name`, and looks up the matching
+   frames folder in `results/frames/` (folder name starting with "<LS>_<trial>_", as created by step 00).
+3) Creates one task per labeled frame that exists on disk.
+4) Processes the tasks in parallel with multiprocessing (up to 32 workers). For each frame:
+   - skips it if the output file already exists;
+   - crops the central square of side min(height, width) (1088 x 1080 -> 1080 x 1080);
+   - resizes it to 512 x 512 with OpenCV INTER_AREA interpolation;
+   - writes it to `results/frames_512/<frames folder>/<frame_name>`.
+
+Inputs
+- BASE = /share/e12507305/preprocessed/DERIVED_ET_IMU_head_mounted (dataLAB storage)
+- <BASE>/<LS>/<trial>/paired_frames.csv
+- <BASE>/results/frames/<frames folder>/frame_XXXXXX.png
+
+Outputs
+- <BASE>/results/frames_512/<frames folder>/frame_XXXXXX.png, read by the training code.
+- A progress message every 10,000 processed frames.
+
+Notes
+- If several frames folders match a recording, the first match is used.
+- Recordings without a matching frames folder, and paired_frames.csv files without the
+  `recording_name` / `frame_name` columns, are skipped without a message.
+"""
 from pathlib import Path
 import pandas as pd
 import cv2
@@ -62,7 +104,7 @@ if __name__ == "__main__":
     tasks = build_tasks()
     print(f"Total labeled frames to process: {len(tasks)}")
 
-    workers = min(32, cpu_count())  # άλλαξέ το αν θες
+    workers = min(32, cpu_count())  # adjust if needed
     print(f"Using workers: {workers}")
 
     with Pool(processes=workers) as pool:

@@ -1,3 +1,49 @@
+"""
+08_pair_frames_with_imus.py
+
+Pairs every extracted frame of the ET - Upper Body recordings with orientation angles from the
+eye-tracker IMU (roll, pitch) and from the external upper-body IMU (roll, pitch, yaw).
+
+Thesis step : Frame-label pairs (Section 3.2.5)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+
+Purpose
+- Build one `paired_frames.csv` per participant and leg, in the same spirit as step 09 of the
+  ET - Head Mounted pipeline. Because of the synchronization problems described in thesis
+  Section 3.2.7, these pairs were not used to train the model.
+
+Leg mapping
+- The frames folders of a participant (sorted by name) are mapped to legs 2, 3, 4. Participants with
+  only two folders use TWO_FOLDER_OVERRIDES (p33 -> legs 2, 3; p103 -> legs 3, 4; others -> legs 2, 3).
+- Only the allowed legs are processed (default {2, 3, 4}; p33 -> {2, 3}; p103 -> {3, 4}).
+  Leg 1 is never processed.
+
+What it does (per participant and leg)
+1) Lists the frame images and reads each frame timestamp from its file name (`..._ts_<epoch ns>`,
+   as written by step 03).
+2) Loads the external IMU angles from `<external_root>/<pid>/leg_<k>_allInOne_aligned_rpy.csv`
+   (output of step 07): upper_world_epoch_ns, roll_deg, pitch_deg, yaw_deg.
+3) Loads roll and pitch of the eye-tracker IMU from `imu.csv` in the matching eye-tracker folder.
+4) Keeps only the frames inside the common time range of both IMUs. `--drop_outside_overlap`
+   defaults to True and is therefore always active.
+5) For every frame, takes the nearest sample of each IMU and the arithmetic mean of
+   `2 * half_window + 1` samples around it (default half_window = 5, i.e. 11 samples).
+   With `--tolerance_ns`, values whose nearest sample is further away are set to NaN.
+6) Writes `<out_root>/<pid>/leg_<k>/paired_frames.csv`.
+
+Output columns
+- participant, leg, frames_dir, frame_name, frame_ts_ns
+- roll_et_nn, pitch_et_nn, roll_et_win, pitch_et_win                      (eye-tracker IMU)
+- roll_external_nn, pitch_external_nn, yaw_external_nn,
+  roll_external_win, pitch_external_win, yaw_external_win                 (external IMU)
+- dt_et_nn_ns, dt_external_nn_ns   (time distance to the nearest IMU sample)
+- et_imu_csv, external_rpy_csv, et_rec_dir   (source files)
+
+Inputs (command-line arguments; the defaults are the original Windows paths)
+- --external_root, --et_root, --frames_root, --out_root, --half_window, --tolerance_ns
+"""
+
 from __future__ import annotations
 
 import argparse

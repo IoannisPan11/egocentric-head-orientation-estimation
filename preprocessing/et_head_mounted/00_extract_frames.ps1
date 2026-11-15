@@ -1,9 +1,16 @@
 <#
-01_export_frames_safe.ps1
+00_extract_frames.ps1
+
+Exports every frame of the scene-camera video of each recording as a PNG image, using FFmpeg.
+
+Thesis step : Frame extraction (Section 3.2.2)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien (PowerShell + FFmpeg)
 
 Purpose
-- Export all frames from each recording's "PI world" video to PNGs using FFmpeg, with a safe
-  no-overwrite policy that avoids mixing partial outputs.
+- Export all frames from each recording's "PI world" video (the scene camera of the Pupil Labs
+  Invisible glasses) to PNG images using FFmpeg, with a safe no-overwrite policy that avoids
+  mixing partial outputs.
 
 Inputs
 - $projectRoot: dataset root containing recording folders.
@@ -42,8 +49,8 @@ Dependencies / Assumptions
 - $minFramesToTreatAsComplete is a heuristic threshold; increase it if you want stricter "complete" detection.
 
 Notes
-- Despite the original filename, this script does not export timestamps; it exports image frames.
-  Consider renaming to `01_export_world_frames_safe.ps1` for clarity.
+- Frame timestamps are not exported here. They come from `export/world.csv` and are matched to the
+  frames by index in step 09 (frame_000001.png corresponds to the first data row of world.csv).
 #>
 
 

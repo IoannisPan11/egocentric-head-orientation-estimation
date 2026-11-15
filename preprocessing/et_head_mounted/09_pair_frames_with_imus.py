@@ -1,6 +1,13 @@
 """
 09_pair_frames_with_imus.py
 
+Pairs every video frame with its orientation angles: roll and pitch from the eye-tracker IMU, yaw from
+the Xsens head IMU. The result is the label table used for training.
+
+Thesis step : Frame-label pairs (Section 3.2.5)
+Dataset     : ET - Head Mounted
+Run on      : Windows workstation at TU Wien
+
 Purpose
 - Create a per-frame training/analysis table by aligning each exported video frame (world camera)
   to the nearest ET IMU samples (roll/pitch) and head IMU samples (yaw), all on a common epoch
@@ -25,7 +32,9 @@ Inputs / Assumptions
 - Extracted frame images exist and are sortable by filename (e.g., `frame_000001.png`), so index
   order matches `world.csv` row order; the script uses `min(len(world_ts), len(images))`.
 - ET IMU CSV contains `{timestamp, roll, pitch}` columns; head CSV contains `{head_epoch_ns, yaw}`.
-- Window smoothing is index-based around the nearest IMU sample (not time-weighted).
+- Window smoothing is index-based around the nearest IMU sample (not time-weighted). The window
+  value is the arithmetic mean of the angle samples; the +/-180 degree wrap-around is not treated
+  specially.
 
 Outputs
 - `paired_frames.csv` with:

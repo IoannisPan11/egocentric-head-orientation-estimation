@@ -1,5 +1,12 @@
 """
-04_world_fps_sanity_check_sliding.py
+04_check_frame_rate.py
+
+Checks the frame rate of every ET - Upper Body recording from the frame timestamps in
+world_timestamps.csv.
+
+Thesis step : Frame-rate check (Section 3.2.1)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Perform a frame rate sanity check on all exported world_timestamps.csv
@@ -58,7 +65,7 @@ Safety / Robustness
 - Does not modify any original data.
 
 Interpretation Guide
-- mean_fps_1swin ~ expected FPS (e.g., ~30)
+- mean_fps_1swin ~ expected FPS (about 20 fps for this dataset)
 - std_fps_1swin ≈ 0 → stable recording
 - large min/max spread → timing instability
 - NaN values → corrupted or incomplete recording
@@ -67,6 +74,9 @@ Notes
 - step_s can be reduced (e.g., 0.01) for denser FPS estimation.
 - Smaller step increases temporal sensitivity but also computation time.
 - Recommended as a preprocessing validation step before synchronization.
+
+Saved output
+- `outputs/fps_sanity_check_summary_sliding_1s.csv` is the summary written by this script.
 
 Author Workflow Position
 - Should be executed after pl-rec-export
@@ -144,7 +154,7 @@ for csv_path in csv_paths:
 
     ts_ns = df[TIMESTAMP_COL].to_numpy(dtype=np.int64)
 
-    counts_1s = sliding_counts_1s(ts_ns, step_s=0.01)  # <-- μπορείς να το κάνεις 0.01 αν θες πιο dense
+    counts_1s = sliding_counts_1s(ts_ns, step_s=0.01)  # <-- step of 0.01 s gives a dense estimate
 
     if counts_1s.size == 0:
         mean_v = min_v = max_v = std_v = np.nan

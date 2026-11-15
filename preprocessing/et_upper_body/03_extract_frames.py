@@ -1,5 +1,12 @@
 """
-02_extract_world_frames_raw_to_derived.py
+03_extract_frames.py
+
+Extracts the frames of the ET - Upper Body recordings from world.mp4 as JPEG images, using OpenCV and
+the timestamps in world_timestamps.csv. Raw and derived data are kept in separate folders.
+
+Thesis step : Frame extraction (Section 3.2.2)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
 
 Purpose
 - Extract per-frame images from each recording’s world video (world.mp4),
@@ -73,10 +80,9 @@ Dependencies
 - pandas
 - opencv-python (cv2)
 
-Typical Use Case
-- After synchronization and timestamp sanity checks.
-- Before building frame–IMU pairing datasets.
-- For downstream deep learning or temporal alignment experiments.
+Position in the pipeline
+- Runs on the raw recordings, before the synchronization steps (05-07) and the frame-IMU
+  pairing (step 08). The frame timestamps written into the file names are used in step 08.
 
 Author Workflow Context
 - Used in ET–Upper Body synchronization pipeline.

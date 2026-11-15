@@ -1,5 +1,14 @@
 """
-03_world_timestamps_temporal_audit.py
+02_check_frame_rate_leg0.py
+
+Checks the frame rate and the timing regularity of the leg0 recordings from their
+world_timestamps.csv files.
+
+Thesis step : Frame-rate check (Section 3.2.1)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
+Note        : "leg0" is the naming used in the code and folders; it corresponds to
+              "video0 (leg1)" in the thesis.
 
 Purpose
 - Perform a comprehensive temporal consistency analysis on all

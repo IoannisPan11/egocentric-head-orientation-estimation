@@ -1,9 +1,12 @@
-from __future__ import annotations
-
 """
-08_compute_rpy_from_quat.py
+07_compute_angles_from_quaternions.py
 
-Compute roll/pitch/yaw from Head orientation quaternions in your *aligned* upper-body compact allInOne files.
+Computes roll, pitch and yaw from the head-sensor quaternions of the aligned upper-body IMU files
+(output of step 06).
+
+Thesis step : Angle extraction (Section 3.2.3)
+Dataset     : ET - Upper Body (explored, not used for the final model)
+Run on      : Windows workstation at TU Wien
 
 INPUT:
 - Root folder with participant subfolders:
@@ -28,9 +31,11 @@ What it does:
 - Logs a run summary to: D:\\upper_body_sync_2\\imu\\_rpy_build_log.csv
 
 Notes:
-- If your quaternion order is XYZW, set QUAT_ORDER="xyzw".
+- If the quaternion order is XYZW, set QUAT_ORDER="xyzw".
 - If yaw sign seems flipped, it is usually axis convention, not “wrong math”.
 """
+
+from __future__ import annotations
 
 from pathlib import Path
 import math
