@@ -22,8 +22,9 @@ Mobile eye-tracking glasses record first-person video. Head orientation, however
 - **Output:** the relative orientation change at the current frame: Δroll, Δpitch, and sin/cos of Δyaw.
 - **Ground truth:** IMU measurements, used only to build the training targets and never as model input. Roll and pitch come from the eye tracker's internal IMU; yaw comes from an external Xsens MTi-300.
 
-<!-- TODO: add pipeline / architecture figure exported from the defense slides -->
-<!-- ![Pipeline overview](docs/figures/pipeline_overview.png) -->
+<p align="center">
+  <img src="docs/figures/problem_overview.png" alt="First-person RGB video is mapped to the head orientation change: delta roll, delta pitch and delta yaw" width="720">
+</p>
 
 ## Method in brief
 
@@ -39,6 +40,12 @@ Mobile eye-tracking glasses record first-person video. Head orientation, however
 3. **Experiments.**
    - Sequential one-factor-at-a-time refinement on a participant-level subset of 9/2/2 recordings: loss function, IMU-angle aggregation, temporal context, batch size, learning rate, regularization, and Transformer capacity.
    - The final configuration was then retrained on the full participant-level split of 26/6/6 recordings.
+
+### Model architecture
+
+![CNN–Transformer architecture: a ResNet-50 encodes each frame, a Transformer encoder with a CLS token models the sequence, and a regression head outputs four values](docs/figures/model_architecture.png)
+
+*CNN–Transformer architecture (thesis Figure 5). The IMU is used only to build the training targets and is never a model input.*
 
 ### Final configuration
 

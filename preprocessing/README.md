@@ -6,8 +6,14 @@ Two datasets were preprocessed. **Only ET – Head Mounted was used to train and
 
 | Folder | Dataset | Setup | Used for the model |
 |---|---|---|---|
-| [`et_head_mounted/`](et_head_mounted/) | **ET – Head Mounted** (pedestrians) | Pupil Labs Invisible glasses + Xsens MTi-300 IMU on a cap | ✅ Yes |
-| [`et_upper_body/`](et_upper_body/) | **ET – Upper Body** (cyclists) | Pupil Labs Invisible glasses + Xsens Awinda (11 upper-body sensors) | ❌ No (excluded) |
+| [`et_head_mounted/`](et_head_mounted/) | **ET – Head Mounted** (pedestrians) | Pupil Labs Invisible glasses + Xsens MTi-300 IMU on a cap | Yes |
+| [`et_upper_body/`](et_upper_body/) | **ET – Upper Body** (cyclists) | Pupil Labs Invisible glasses + Xsens Awinda (11 upper-body sensors) | No (excluded) |
+
+<p align="center">
+  <img src="../docs/figures/data_acquisition_setup.png" alt="Pedestrian setup: Xsens MTi-300 on the cap provides yaw; Pupil Labs Invisible glasses provide the scene camera and roll and pitch from the internal IMU" width="420">
+</p>
+
+*ET – Head Mounted setup. Roll and pitch come from the internal IMU of the glasses, and yaw comes from the Xsens MTi-300 on the cap.*
 
 ## Why ET – Upper Body was excluded
 
@@ -21,7 +27,9 @@ The scripts are still published for transparency. They document the work that wa
 
 ## ET – Head Mounted pipeline
 
-The scripts run in numerical order. Each script has a docstring at the top that describes its inputs, outputs, and logic.
+![The six preprocessing steps: frame-rate check, frame extraction, angle extraction, time synchronization, frame–label pairs, crop and resize](../docs/figures/preprocessing_pipeline.png)
+
+The scripts run in numerical order. Each script has a docstring at the top that describes its inputs, outputs, and logic. The last column maps every script to one of the six steps above.
 
 | Step | Script | What it does | Thesis step |
 |---|---|---|---|
@@ -33,7 +41,7 @@ The scripts run in numerical order. Each script has a docstring at the top that 
 | 05 | `05_fix_ts_ns_best_all.py` | Ensures each merged file has a usable time axis | Time synchronization |
 | 06 | `06_sync_head_imu_to_et_with_offsets.py` | Shifts the head-IMU timestamps onto the eye-tracker timeline using the offsets | Time synchronization |
 | 07 | `07_add_head_epoch_all.py` | Converts the synchronized head-IMU time to epoch timestamps | Time synchronization |
-| 08 | `08_clean_head_epoch_csvs.py` | Removes rows with missing angles or timestamps | Cleaning |
+| 08 | `08_clean_head_epoch_csvs.py` | Removes rows with missing angles or timestamps | Time synchronization |
 | 09 | `09_pair_frames_with_imus.py` | Pairs every frame with roll/pitch (eye-tracker IMU) and yaw (Xsens), using the nearest sample or a window mean | Frame–label pairs |
 
 The last preprocessing step, **crop and resize** (1088×1080 → 1080×1080 → 512×512), ran on the TU Wien dataLAB cluster together with training. Its scripts are in [`../training/frame_resizing/`](../training/frame_resizing/).
