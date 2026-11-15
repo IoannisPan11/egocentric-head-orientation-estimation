@@ -1,3 +1,35 @@
+"""
+dataset.py
+
+Dataset module used by the two Smooth L1 runs of the loss-function experiment (Section 5.2),
+which train on the nearest-neighbour (NN) labels, and by `inspect_recording_windows.py`.
+
+Thesis step : Problem formulation and targets (Sections 4.1, 4.4.2)
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+
+Notes
+- The code is identical to `dataset_win11.py`: it reads `paired_frames11.csv`. The NN runs
+  pass angle_cols=("roll_nn", "pitch_nn", "yaw_nn"), so they use the nearest-sample
+  columns of that file, which do not depend on the window size.
+
+Contents
+- `RecordingItem`: participant, trial, recording name, paired CSV and frame folder of a recording.
+- `discover_recordings`: finds every `<participant>/<trial>/paired_frames11.csv` under the base
+  folder and the matching frame folder under `results/frames_512/`.
+- `build_participant_split`: a random participant-level split (not used by the experiments, which
+  read the fixed split files).
+- `HeadMountedSequenceDataset`: sliding windows of past_frames + 1 + future_frames consecutive
+  frames with a given stride. Rows with missing angles are dropped.
+
+Target of each window
+- The change between the previous frame and the current frame (the last past frame and the
+  frame after it): [delta_roll / 180, delta_pitch / 180, sin(delta_yaw), cos(delta_yaw)].
+- The yaw change is wrapped to [-180, 180) before the sin/cos encoding.
+
+Each sample is a dict with the frame tensor [T, 3, H, W], the target and metadata
+(recording, frame names and timestamps).
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

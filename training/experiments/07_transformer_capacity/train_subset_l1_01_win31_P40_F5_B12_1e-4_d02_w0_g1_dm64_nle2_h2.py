@@ -1,3 +1,52 @@
+"""
+train_subset_l1_01_win31_P40_F5_B12_1e-4_d02_w0_g1_dm64_nle2_h2.py
+
+Trains one configuration of the transformer capacity experiment on the intermediate
+subset: 2 attention heads.
+
+Thesis step : Transformer capacity - attention heads (Section 5.8.3)
+Run folder  : runs/Architecture_Sweep__head_2
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+Launcher    : `run_training_a100s_l1_01_win31_P40_F5_B12_1e-4_d02_w0_g1_dm64_nle2_h2.sh`
+
+Configuration
+- Labels          : Window 31: `dataset_win31.py`, columns roll_win, pitch_win, yaw_win
+- Input sequence  : 40 past + 1 current + 5 future frames, stride 8 between windows
+- Split           : `fixed_split.json` (9 / 2 / 2 recordings, participant-level)
+- Batch size      : 12
+- Loss            : Smooth L1, beta 0.1
+- Optimizer       : AdamW, learning rate 1e-4 (backbone 1e-5), weight decay 0
+- Schedule        : cosine annealing over 50 epochs down to 1e-6
+- Regularization  : dropout 0.2, gradient clipping 1.0
+- Transformer     : d_model 64, 2 layers, 2 heads, feed-forward 512
+- Early stopping  : patience 4 epochs on the validation loss
+
+What the script does
+1. Finds the recordings, loads the split and builds the sliding-window datasets
+   (frames normalized with the ImageNet mean and standard deviation).
+2. Builds the ResNet-50 + Transformer model and freezes conv1, bn1, layer1 and layer2 of
+   the ImageNet-pretrained backbone.
+3. Trains with mixed precision (torch.amp): optimizer step every `accumulation_steps` batches,
+   gradient-norm clipping before each optimizer step.
+4. Evaluates on the validation set after every epoch and saves `best_model.pth` whenever the
+   validation loss improves.
+5. After training, writes `history.csv` and four plots (loss, mean MAE, RMSE and MedAE),
+   evaluates the best model on the test set and appends the test metrics to
+   `runs/experiments_summary.csv`.
+
+Targets and metrics
+- Targets: the change between the previous and the current frame, [delta_roll / 180,
+  delta_pitch / 180, sin(delta_yaw), cos(delta_yaw)], computed by the dataset module.
+- Metrics: MAE, RMSE and median absolute error in degrees for roll, pitch and yaw and their
+  mean. Yaw is recovered with atan2 and its error is wrapped to [-180, 180).
+
+How to run
+- From the `training/` folder, which holds the dataset modules, the model and the split files:
+    PYTHONPATH=. python experiments/07_transformer_capacity/train_subset_l1_01_win31_P40_F5_B12_1e-4_d02_w0_g1_dm64_nle2_h2.py
+- The data path (BASE) is the original path on the cluster; outputs go to `runs/` in the
+  working directory.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path

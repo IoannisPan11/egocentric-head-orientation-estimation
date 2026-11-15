@@ -1,3 +1,58 @@
+"""
+train_subset_l1_01.py
+
+Trains one configuration of the loss function experiment on the intermediate
+subset: Smooth L1 loss with beta = 0.1.
+
+Thesis step : Loss function (Section 5.2)
+Run folder  : runs/Loss_Function__L1_Beta_0.1
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+Launcher    : `run_training_a100s_l1_01.sh`
+
+Notes
+- Selected configuration of this step. The same run is the nearest-neighbour (NN) reference
+  of the IMU-angle aggregation experiment (Section 5.3).
+  This script also prints the total, trainable and frozen parameter counts before and after
+  the backbone freezing.
+
+Configuration
+- Labels          : Nearest neighbour (NN): `dataset.py`, columns roll_nn, pitch_nn, yaw_nn
+- Input sequence  : 20 past + 1 current + 5 future frames, stride 8 between windows
+- Split           : `fixed_split.json` (9 / 2 / 2 recordings, participant-level)
+- Batch size      : 24
+- Loss            : Smooth L1, beta 0.1
+- Optimizer       : AdamW, learning rate 1e-4 (backbone 1e-5), weight decay 0.01
+- Schedule        : cosine annealing over 50 epochs down to 1e-6
+- Regularization  : dropout 0.1, gradient clipping 1.0
+- Transformer     : d_model 64, 2 layers, 4 heads, feed-forward 512
+- Early stopping  : patience 4 epochs on the validation loss
+
+What the script does
+1. Finds the recordings, loads the split and builds the sliding-window datasets
+   (frames normalized with the ImageNet mean and standard deviation).
+2. Builds the ResNet-50 + Transformer model and freezes conv1, bn1, layer1 and layer2 of
+   the ImageNet-pretrained backbone.
+3. Trains with mixed precision (torch.amp): optimizer step after every batch,
+   gradient-norm clipping before each optimizer step.
+4. Evaluates on the validation set after every epoch and saves `best_model.pth` whenever the
+   validation loss improves.
+5. After training, writes `history.csv` and four plots (loss, mean MAE, RMSE and MedAE),
+   evaluates the best model on the test set and appends the test metrics to
+   `runs/experiments_summary.csv`.
+
+Targets and metrics
+- Targets: the change between the previous and the current frame, [delta_roll / 180,
+  delta_pitch / 180, sin(delta_yaw), cos(delta_yaw)], computed by the dataset module.
+- Metrics: MAE, RMSE and median absolute error in degrees for roll, pitch and yaw and their
+  mean. Yaw is recovered with atan2 and its error is wrapped to [-180, 180).
+
+How to run
+- From the `training/` folder, which holds the dataset modules, the model and the split files:
+    PYTHONPATH=. python experiments/01_loss_function/train_subset_l1_01.py
+- The data path (BASE) is the original path on the cluster; outputs go to `runs/` in the
+  working directory.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path

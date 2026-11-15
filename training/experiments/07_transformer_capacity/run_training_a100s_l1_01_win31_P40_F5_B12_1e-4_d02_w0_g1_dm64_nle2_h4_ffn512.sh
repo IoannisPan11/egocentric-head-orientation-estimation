@@ -29,4 +29,4 @@ echo "Torch / CUDA check:"
 micromamba run -n thesis-gpu python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0))"
 
 echo "Starting training..."
-micromamba run -n thesis-gpu python -u train_subset_l1_01_win31_P40_F5_B12_1e-4_d02_w0_g1_dm64_nle2_h4.py
+micromamba run -n thesis-gpu python -u train_subset_l1_01_win31_P40_F5_B12_1e-4_d02_w0_g1_dm64_nle2_h4_ffn512.py

@@ -1,3 +1,28 @@
+"""
+create_final_split_full_dataset.py
+
+Creates the final participant-level split of all 38 recordings (26 / 6 / 6) and writes it
+to `final_split.json`. The final model (Section 5.9) reads this file.
+
+Thesis step : Final experimental split (Section 4.3.3)
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+
+What it does
+1. Finds the recordings and counts the windows of each one with the final temporal context
+   (40 past + 1 + 5 future frames, stride 8).
+2. Extends the intermediate split: the 13 recordings of `fixed_split.json` keep their set,
+   and every other recording of the same participants goes to the same set.
+3. Runs a seeded random search (300,000 iterations) that assigns the remaining participants,
+   with all their recordings, to train / val / test until the sets hold 26 / 6 / 6 recordings.
+4. Keeps the candidate whose window ratios are closest to 70 / 15 / 15 %.
+5. Writes `final_split.json`, checks that the intermediate split is contained in it and that
+   no participant appears in two sets, and prints the window counts and ratios.
+
+Input / output
+- Input : `fixed_split.json` in the working directory.
+- Output: `final_split.json` in the working directory.
+"""
+
 from __future__ import annotations
 
 import json

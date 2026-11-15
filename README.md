@@ -89,7 +89,7 @@ Each top-level folder has its own README with details.
 
 ## Provenance of the code
 
-The **executable code is the code that was run** for the thesis; it has not been refactored. For readability, scripts were renamed and their docstrings and comments were rewritten in English. An automated comparison of the code before and after (Python AST, PowerShell non-comment lines) confirms that the executable code did not change, apart from two documented one-line corrections. The first commit keeps the original upload. See [`preprocessing/README.md`](preprocessing/README.md#changes-since-the-original-upload) for the details.
+The **executable code is the code that was run** for the thesis; it has not been refactored. For readability, scripts were renamed and their docstrings and comments were rewritten in English. An automated comparison of the code before and after (Python AST, PowerShell non-comment lines) confirms that the executable code did not change, apart from a few documented corrections. The first commit of each folder keeps the original files. See the change notes in [`preprocessing/README.md`](preprocessing/README.md#changes-since-the-original-upload) and [`training/README.md`](training/README.md#changes-since-the-original-files).
 
 - **Preprocessing** ran on a Windows workstation at TU Wien. The scripts contain the original local paths.
 - **Frame resizing, training, and evaluation** ran on the TU Wien **dataLAB** cluster (SLURM, NVIDIA A100). The original SLURM launch scripts are included.

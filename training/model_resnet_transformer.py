@@ -1,3 +1,27 @@
+"""
+model_resnet_transformer.py
+
+The CNN-Transformer regression model used in every experiment and in the final model.
+
+Thesis step : Model architecture (Section 4.2)
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+
+Architecture
+- `ResNetBackbone`: ResNet-50 (ImageNet weights) without its classification layer, followed by
+  a linear projection from 2048 to d_model features per frame.
+- `PositionalEncoding`: fixed sinusoidal positional encoding (maximum length 512).
+- `ResNetTransformerRegressor`: encodes every frame of the sequence, prepends a learnable CLS
+  token, adds the positional encoding and applies a Transformer encoder (pre-norm, GELU,
+  batch_first). The CLS output goes through a regression head
+  (LayerNorm -> Linear(d_model, 128) -> GELU -> Dropout -> Linear(128, 4)).
+
+Input and output
+- Input : frames of shape (B, T, 3, H, W).
+- Output: (B, 4) = [delta_roll, delta_pitch, sin(delta_yaw), cos(delta_yaw)].
+
+The dropout value is used both in the encoder layers and in the regression head.
+"""
+
 from __future__ import annotations
 
 import torch
@@ -73,7 +97,7 @@ class ResNetTransformerRegressor(nn.Module):
         dropout: float = 0.1,
         pretrained_backbone: bool = True,
         use_cls: bool = True,
-        out_dim: int = 4,   # [Δroll, Δpitch, sinΔyaw, cosΔyaw]
+        out_dim: int = 4,   # [delta_roll, delta_pitch, sin(delta_yaw), cos(delta_yaw)]
     ):
         super().__init__()
 
@@ -139,7 +163,7 @@ class ResNetTransformerRegressor(nn.Module):
 
         output:
             (B, 4)
-            [Δroll, Δpitch, sin(Δyaw), cos(Δyaw)]
+            [delta_roll, delta_pitch, sin(delta_yaw), cos(delta_yaw)]
         """
         B, T, C, H, W = frames.shape
 

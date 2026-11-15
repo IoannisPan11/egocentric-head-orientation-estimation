@@ -1,3 +1,28 @@
+"""
+create_fixed_split_preliminary.py
+
+Creates the fixed participant-level split of the intermediate experimentation subset
+(9 / 2 / 2 recordings) and writes it to `fixed_split.json`. All experiments of Sections
+5.2-5.8 read this file.
+
+Thesis step : Intermediate experimentation subset (Section 4.3.2)
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+
+What it does
+1. Finds the recordings (via `dataset_win31.discover_recordings`) and counts the windows of
+   each one (20 past + 1 + 5 future frames, stride 8).
+2. Sorts the recordings by window count and divides them into four quartiles.
+3. Runs a seeded random search (100,000 iterations): picks 3 / 3 / 3 / 4 recordings from the
+   four quartiles and splits the 13 recordings randomly into 9 / 2 / 2.
+4. Rejects candidates in which a participant appears in more than one set, and keeps the one
+   whose window ratios are closest to 70 / 15 / 15 % (sum of squared differences).
+5. Writes `fixed_split.json` with the recording names and the search settings, and prints
+   the window counts and ratios.
+
+Output
+- `fixed_split.json` in the working directory.
+"""
+
 from __future__ import annotations
 
 import json

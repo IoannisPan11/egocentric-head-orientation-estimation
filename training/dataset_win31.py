@@ -1,3 +1,37 @@
+"""
+dataset_win31.py
+
+Dataset module for the Window 31 labels: each frame label is the mean of 31 IMU samples around
+the nearest sample (step 09 of the preprocessing). Used by the Window 31 run (Section 5.3),
+every later experiment (Sections 5.4-5.8), the final model (Section 5.9) and the two split
+scripts.
+
+Thesis step : Problem formulation and targets (Sections 4.1, 4.4.3)
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+
+Notes
+- Compared with the Window 11 / 21 modules, the pitch change is also wrapped to [-180, 180)
+  (shortest signed angular difference), and `__getitem__` additionally returns the wrapped
+  differences in degrees (`delta_angles`).
+
+Contents
+- `RecordingItem`: participant, trial, recording name, paired CSV and frame folder of a recording.
+- `discover_recordings`: finds every `<participant>/<trial>/paired_frames31.csv` under the base
+  folder and the matching frame folder under `results/frames_512/`.
+- `build_participant_split`: a random participant-level split (not used by the experiments, which
+  read the fixed split files).
+- `HeadMountedSequenceDataset`: sliding windows of past_frames + 1 + future_frames consecutive
+  frames with a given stride. Rows with missing angles are dropped.
+
+Target of each window
+- The change between the previous frame and the current frame (the last past frame and the
+  frame after it): [delta_roll / 180, delta_pitch / 180, sin(delta_yaw), cos(delta_yaw)].
+- The yaw change is wrapped to [-180, 180) before the sin/cos encoding.
+
+Each sample is a dict with the frame tensor [T, 3, H, W], the target and metadata
+(recording, frame names and timestamps).
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

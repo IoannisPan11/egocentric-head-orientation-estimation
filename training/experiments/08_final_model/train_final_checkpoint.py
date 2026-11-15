@@ -1,3 +1,42 @@
+"""
+train_final_checkpoint.py
+
+Trains the final model: the configuration selected by the experiments of Sections 5.2-5.8,
+retrained on the full dataset with the final participant-level split.
+
+Thesis step : Final optimized configuration (Section 5.9)
+Run folder  : runs/Final_Full_Dataset__Final_Config_All_Recordings
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+Launcher    : `run_training_train_final.sh`
+
+Configuration
+- Labels          : Window 31: `dataset_win31.py`, columns roll_win, pitch_win, yaw_win
+- Input sequence  : 40 past + 1 current + 5 future frames, stride 8 between windows
+- Split           : `final_split.json` (26 / 6 / 6 recordings, participant-level)
+- Batch size      : 12
+- Loss            : Smooth L1, beta 0.1
+- Optimizer       : AdamW, learning rate 1e-4 (backbone 1e-5), weight decay 0
+- Schedule        : cosine annealing over 50 epochs down to 1e-6
+- Regularization  : dropout 0.2, gradient clipping 1.0
+- Transformer     : d_model 64, 2 layers, 4 heads, feed-forward 512
+- Early stopping  : patience 4 epochs on the validation loss
+
+What the script does
+- The same training and evaluation procedure as the experiment scripts (frozen early ResNet
+  layers, mixed precision, `best_model.pth` at the lowest validation loss, `history.csv`,
+  plots, test evaluation and `runs/experiments_summary.csv`).
+- In addition, it saves `last_checkpoint.pth` after every epoch (model, optimizer, scheduler,
+  gradient scaler, early-stopping state and history). If that file exists at start-up,
+  training resumes from the next epoch, so the job can be restarted after a time limit.
+
+Output
+- The `best_model.pth` of this run is the published model weights.
+
+How to run
+- From the `training/` folder:
+    PYTHONPATH=. python experiments/08_final_model/train_final_checkpoint.py
+"""
+
 from __future__ import annotations
 
 from pathlib import Path

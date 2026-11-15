@@ -1,3 +1,25 @@
+"""
+inspect_recording_windows.py
+
+Counts the training windows of every recording and writes `recording_window_counts.csv`.
+It is an inspection script; the split scripts compute their own counts.
+
+Thesis step : Data splitting (Section 4.3)
+Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
+
+What it does
+- Finds the recordings with `dataset.discover_recordings`.
+- For each recording, drops the rows with missing NN angles and counts the windows of
+  20 past + 1 + 5 future frames with stride 8.
+- Prints the recordings sorted by window count and writes the table to
+  `recording_window_counts.csv` (participant, trial, recording, paired CSV, frame folder,
+  number of windows).
+
+Note
+- The included `recording_window_counts.csv` was written by an earlier run of this script,
+  when the paired files were still named `paired_frames.csv`.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
