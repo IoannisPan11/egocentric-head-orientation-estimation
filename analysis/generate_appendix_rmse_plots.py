@@ -1,3 +1,28 @@
+"""
+generate_appendix_rmse_plots.py
+
+Draws the validation Mean RMSE per epoch of all configurations of each experiment, one
+figure per experiment, as in Appendix A of the thesis.
+
+Thesis      : Figures A.1-A.12 (Appendix A)
+Run on      : TU Wien dataLAB cluster, after the training runs
+Input       : `runs/<run folder>/history.csv`, as written by the training scripts
+Output      : `appendix_figures/figure_A<n>_<experiment>_rmse_evolution.png` (300 dpi)
+
+What it does
+- For each experiment, reads the `val_rmse_mean_deg` column of the runs that the thesis
+  compares in the corresponding table of Chapter 5. As there, the reference configuration
+  of an experiment is a run of the previous step; for example, "Nearest Neighbor" in
+  Figure A.2 is the run `Loss_Function__L1_Beta_0.1`.
+- Draws longer curves first, so that shorter curves stay visible on top.
+- Saves one figure per experiment. The figures used in the thesis are in `appendix_figures/`.
+
+How to run
+- From the folder that contains `runs/`:
+    python generate_appendix_rmse_plots.py
+- The histories of all runs are also in `results/`; see `analysis/README.md`.
+"""
+
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt

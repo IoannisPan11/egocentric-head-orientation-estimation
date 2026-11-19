@@ -1,3 +1,38 @@
+"""
+analyze_target_distribution.py
+
+Describes the frame-to-frame orientation changes that the model predicts, and the error of a
+no-change prediction that assumes zero head motion. The results are printed to the console.
+
+Thesis step : Data splitting and reference performance (Sections 4.3.2 and 5.1)
+Thesis      : Table 4 (preliminary subset vs. full dataset), Table 7 (no-change Mean RMSE)
+Run on      : TU Wien dataLAB cluster
+Launcher    : `run_target_distribution.sh`
+
+What it does
+- Uses the baseline configuration (Section 4.4.1): nearest-neighbour angles (`roll_nn`,
+  `pitch_nn`, `yaw_nn` of `paired_frames11.csv`) and windows of 20 past + 1 + 5 future
+  frames with stride 8, as the training scripts build them.
+- For every window, takes the change in roll, pitch and yaw between the previous and the
+  current frame, wrapped to [-180, 180) degrees.
+- For each angle, prints the mean and median absolute change, the standard deviation, the
+  maximum absolute change and the RMSE of predicting zero change. The mean of the three
+  RMSE values is the no-change Mean RMSE.
+- Repeats this for the whole dataset (all recordings under `BASE`), for each subset of the
+  preliminary split (`fixed_split.json`) and for the preliminary subset as a whole, and for
+  each subset of the final split (`final_split.json`).
+
+Thesis values
+- Table 4: mean absolute change and standard deviation of "PRELIMINARY ALL" and
+  "WHOLE DATASET".
+- Table 7: no-change Mean RMSE of "PRELIMINARY VAL", "FINAL VAL" and "FINAL TEST".
+
+How to run
+- Needs the output of preprocessing step 09 under `BASE` (the data are not public).
+- From the `training/` folder, where the split files are:
+    python ../analysis/analyze_target_distribution.py
+"""
+
 from pathlib import Path
 import json
 import numpy as np
