@@ -24,6 +24,14 @@ The experiments are **sequential**: each step varies one factor, and the configu
 
 All experiments use the intermediate subset (`fixed_split.json`). The final model was then retrained on the full split (`final_split.json`).
 
+![Sequential refinement: each experiment tests candidate values, the best validation configuration becomes the updated baseline of the next experiment](../docs/figures/sequential_refinement.png)
+
+*Sequential refinement of the configuration (thesis Figure 6).*
+
+![Overview of the experiments with the baseline, the tested values and the selected value of each factor](../docs/figures/experiments_overview.png)
+
+*Baseline, tested values and selected value of each experiment.*
+
 | Step | Folder | Section | Varied | Reference (run of the previous step) | Selected |
 |---|---|---|---|---|---|
 | 1 | `01_loss_function` | 5.2 | Geodesic, Smooth L1 β = 0.05, β = 0.1 | Geodesic (baseline configuration) | Smooth L1, β = 0.1 |
