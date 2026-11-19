@@ -5,7 +5,7 @@ Trains one configuration of the temporal context experiment on the intermediate
 subset: 10 past frames, no future frames.
 
 Thesis step : Temporal context (Section 5.4)
-Run folder  : runs/Temporal_Contect_Sweep__Past10_Future0
+Run folder  : runs/Temporal_Context_Sweep__Past10_Future0
 Run on      : TU Wien dataLAB cluster (SLURM, NVIDIA A100)
 Launcher    : `run_training_a100s_l1_01_win31_P10_F0.sh`
 
@@ -601,7 +601,7 @@ def main():
     # -----------------------------------------------------
     # Experiment identity
     # -----------------------------------------------------
-    EXPERIMENT_NAME = "Temporal_Contect_Sweep"
+    EXPERIMENT_NAME = "Temporal_Context_Sweep"
     EXPERIMENT_VALUE = "Past10_Future0"
 
     PAST_FRAMES = 10
