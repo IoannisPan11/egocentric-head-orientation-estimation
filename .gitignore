@@ -13,3 +13,6 @@ __pycache__/
 
 # Data are not part of this repository
 data/
+
+# Figures redrawn from results/ (see analysis/README.md)
+figures_rebuild/

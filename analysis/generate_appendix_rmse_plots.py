@@ -137,8 +137,8 @@ plot_rmse_curves(
 # =========================================================
 plot_rmse_curves(
     runs={
-        "Past 10 - Future 0": BASE_DIR / "Temporal_Contect_Sweep__Past10_Future0" / "history.csv",
-        "Past 20 - Future 0": BASE_DIR / "Temporal_Contect_Sweep__Past20_Future0" / "history.csv",
+        "Past 10 - Future 0": BASE_DIR / "Temporal_Context_Sweep__Past10_Future0" / "history.csv",
+        "Past 20 - Future 0": BASE_DIR / "Temporal_Context_Sweep__Past20_Future0" / "history.csv",
         "Past 20 - Future 5": BASE_DIR / "IMU_Angle_Experiment__Window_31" / "history.csv",
         "Past 40 - Future 5": BASE_DIR / "Temporal_Context_Sweep__Past40_Future5" / "history.csv",
     },
@@ -152,7 +152,7 @@ plot_rmse_curves(
 # =========================================================
 plot_rmse_curves(
     runs={
-        "Batch size = 12": BASE_DIR / "Batch_Size_12" / "history.csv",
+        "Batch size = 12": BASE_DIR / "Batch_Size_Sweep__Batch12" / "history.csv",
         "Batch size = 24": BASE_DIR / "Temporal_Context_Sweep__Past40_Future5" / "history.csv",
     },
     title="Batch Size Experiment",
@@ -166,7 +166,7 @@ plot_rmse_curves(
 plot_rmse_curves(
     runs={
         "3 × 10⁻⁵": BASE_DIR / "LR_Sweep__AdamW_diffLR_base3e-5" / "history.csv",
-        "1 × 10⁻⁴": BASE_DIR / "Batch_Size_12" / "history.csv",
+        "1 × 10⁻⁴": BASE_DIR / "Batch_Size_Sweep__Batch12" / "history.csv",
         "2 × 10⁻⁴": BASE_DIR / "LR_Sweep__AdamW_diffLR_base2e-4" / "history.csv",
         "3 × 10⁻⁴": BASE_DIR / "LR_Sweep__AdamW_diffLR_base3e-4" / "history.csv",
     },
@@ -182,7 +182,7 @@ plot_rmse_curves(
     runs={
         "0.0": BASE_DIR / "Dropout_Sweep__1e-4_dropout00" / "history.csv",
         "0.05": BASE_DIR / "Dropout_Sweep__1e-4_dropout005" / "history.csv",
-        "0.1": BASE_DIR / "Batch_Size_12" / "history.csv",
+        "0.1": BASE_DIR / "Batch_Size_Sweep__Batch12" / "history.csv",
         "0.2": BASE_DIR / "Dropout_Sweep__1e-4_dropout02" / "history.csv",
     },
     title="Dropout Experiment",

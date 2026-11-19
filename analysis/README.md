@@ -37,13 +37,26 @@ It needs the paired CSV files of preprocessing step 09 under the original data p
 
 *Figure A.3: validation Mean RMSE per epoch of the temporal-context experiment.*
 
-The script runs from the folder that contains `runs/`:
+The script runs from the folder that contains `runs/`. After new training runs, this is the `training/` folder:
 
 ```bash
-python generate_appendix_rmse_plots.py
+cd training
+python ../analysis/generate_appendix_rmse_plots.py
 ```
+
+To draw the figures from the histories in [`results/`](../results/), copy the run folders into a `runs/` folder first. From the repository root:
+
+```bash
+mkdir -p figures_rebuild/runs
+cp -R results/*/* figures_rebuild/runs/
+cd figures_rebuild
+python ../analysis/generate_appendix_rmse_plots.py
+```
+
+The figures are written to `figures_rebuild/appendix_figures/`. The folder `figures_rebuild/` is ignored by git.
 
 ## Changes since the original files
 
-- Docstrings were added to both Python scripts. The executable code is unchanged, which was verified by comparing the abstract syntax tree (AST) before and after.
+- Docstrings were added to both Python scripts.
+- `generate_appendix_rmse_plots.py` reads three runs under their current names (`Temporal_Context_Sweep__Past10_Future0`, `Temporal_Context_Sweep__Past20_Future0`, `Batch_Size_Sweep__Batch12`; see [`results/README.md`](../results/README.md#changes-since-the-original-files)). Apart from these five paths, the executable code is unchanged, which was verified by comparing the abstract syntax tree (AST) before and after.
 - Jupyter backup copies of the figures were not included.
