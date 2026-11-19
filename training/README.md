@@ -30,8 +30,8 @@ All experiments use the intermediate subset (`fixed_split.json`). The final mode
 | 2 | `02_imu_angle_aggregation` | 5.3 | Window 11, 21, 31 | NN: `Loss_Function__L1_Beta_0.1` | Window 31 |
 | 3 | `03_temporal_context` | 5.4 | Past 10 / Future 0, Past 20 / Future 0, Past 40 / Future 5 | Past 20 / Future 5: `IMU_Angle_Experiment__Window_31` | Past 40 / Future 5 |
 | 4 | `04_batch_size` | 5.5 | 12 | 24: `Temporal_Context_Sweep__Past40_Future5` | 12 |
-| 5 | `05_learning_rate` | 5.6 | 2e-4, 3e-4, 3e-5 | 1e-4: `Batch_Size_12` | 1e-4 |
-| 6a | `06_regularization` | 5.7.1 | Dropout 0, 0.05, 0.2 | 0.1: `Batch_Size_12` | 0.2 |
+| 5 | `05_learning_rate` | 5.6 | 2e-4, 3e-4, 3e-5 | 1e-4: `Batch_Size_Sweep__Batch12` | 1e-4 |
+| 6a | `06_regularization` | 5.7.1 | Dropout 0, 0.05, 0.2 | 0.1: `Batch_Size_Sweep__Batch12` | 0.2 |
 | 6b | `06_regularization` | 5.7.2 | Weight decay 0, 0.001, 0.05 | 0.01: `Dropout_Sweep__1e-4_dropout02` | 0 |
 | 6c | `06_regularization` | 5.7.3 | Gradient clipping 0.5, 5, none | 1.0: `Weight_Decay_Sweep__wd_0` | 1.0 |
 | 7 | `07_transformer_capacity` | 5.8 | d_model 32 / 128 / 256, 1 / 3 / 4 layers, 2 / 8 heads, FFN 256 / 1024 / 2048 | d_model 64, 2 layers, 4 heads, FFN 512: `Weight_Decay_Sweep__wd_0` | the reference |
@@ -65,7 +65,7 @@ The scripts were first committed exactly as they were on the cluster. They were 
 
 - moved into one folder per experiment; the two split scripts renamed (`create_fixed_split.py`, `create_final_split.py`); a Greek capital Beta (Β) in the launcher names replaced by a Latin B;
 - docstrings added to every Python file, and the Δ symbols in the model comments written out in English;
-- the scripts of three runs were not among the saved files (`Batch_Size_12`, `LR_Sweep__AdamW_diffLR_base2e-4`, `Weight_Decay_Sweep__wd_0`), and `04_batch_size` held a copy of the Past 40 / Future 5 script. These scripts were recreated from the neighbouring script of the same experiment by changing only the varied setting and the run name. Their learning rate and weight decay agree with the optimizer state stored in the checkpoints of these runs;
+- the scripts of three runs were not among the saved files (`Batch_Size_Sweep__Batch12`, `LR_Sweep__AdamW_diffLR_base2e-4`, `Weight_Decay_Sweep__wd_0`), and `04_batch_size` held a copy of the Past 40 / Future 5 script. These scripts were recreated from the neighbouring script of the same experiment by changing only the varied setting and the run name. Their learning rate and weight decay agree with the optimizer state stored in the checkpoints of these runs;
 - the launcher of `..._ffn512.py` called the file under an earlier name and now calls it by its current name;
 - the run name `Temporal_Contect_Sweep` in the Past 10 / Future 0 and Past 20 / Future 0 scripts corrected to `Temporal_Context_Sweep`, as in the third script of the experiment and in `experiments_summary.csv`.
 

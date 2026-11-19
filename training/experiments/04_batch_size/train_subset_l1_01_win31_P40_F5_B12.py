@@ -12,7 +12,7 @@ Launcher    : `run_training_a100s_l1_01_win31_P40_F5_B12.sh`
 Notes
 - Selected configuration of this step. The same run is the reference of the learning-rate
   experiment (base learning rate 1e-4, Section 5.6) and of the dropout experiment
-  (dropout 0.1, Section 5.7.1). Its published run folder is named `Batch_Size_12`.
+  (dropout 0.1, Section 5.7.1).
 
 Configuration
 - Labels          : Window 31: `dataset_win31.py`, columns roll_win, pitch_win, yaw_win
