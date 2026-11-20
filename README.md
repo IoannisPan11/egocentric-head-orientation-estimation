@@ -82,7 +82,7 @@ The *no-change* reference assumes zero head motion between consecutive frames. T
 ├── analysis/              # Target-distribution analysis and appendix figures
 ├── results/               # Training histories and metrics of every run (no model weights)
 ├── docker/                # Container definition for the training/evaluation code
-└── docs/                  # Thesis-to-code mapping, experiment index, reproducibility notes
+└── docs/                  # Reproducibility notes, data availability, figures of the READMEs
 ```
 
 Each top-level folder has its own README with details.
@@ -98,7 +98,7 @@ Because the scripts contain hard-coded paths of the original machines, the Docke
 
 ## Data availability
 
-The recordings are first-person videos of public urban spaces and may show bystanders who can be identified. For privacy and data-protection reasons, the data are **not publicly available**. The recordings are held by the research group at TU Wien that collected them. The author does not hold a copy and cannot share them.
+The recordings are first-person videos of public urban spaces and may show bystanders who can be identified. For privacy and data-protection reasons, the data are **not publicly available**. The recordings belong to the [Spatial Human-Computer Interaction Lab](https://geoinfo.geo.tuwien.ac.at/spatial-hci-lab/) of the Research Group Geoinformation at TU Wien, which collected them. The author does not hold a copy and cannot share them; requests for access should be directed to the lab.
 
 No raw or derived data are included in this repository. [`docs/data_availability.md`](docs/data_availability.md) describes the folder layout the code expects, so the scripts can be read and followed without the data.
 
