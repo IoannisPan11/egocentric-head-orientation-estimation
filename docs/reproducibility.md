@@ -26,6 +26,10 @@ The PyTorch version follows from the code and the saved checkpoint: the training
 
 FFmpeg and PowerShell are needed in addition for the `.ps1` script of step 00.
 
+## Version of the shared modules
+
+The modules shared by the training scripts (`dataset_win31.py`, `model_resnet_transformer.py`) received small additions while the experiments were running. The repository contains their latest version, which is the one used to train the final model.
+
 ## Hard-coded paths
 
 The code is published as it was run, so the scripts contain the absolute paths of the original machines:
