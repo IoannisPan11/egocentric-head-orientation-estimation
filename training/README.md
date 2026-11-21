@@ -48,7 +48,6 @@ All experiments use the intermediate subset (`fixed_split.json`). The final mode
 Notes on the table:
 
 - **Step 3.** The Past 40 / Future 5 run uses batch size 8 with gradient accumulation over 3 steps, so its effective batch size is 24, the same as in all earlier runs.
-- **Step 7.** `..._dm64_nle2_h4_ffn512.py` contains the reference configuration of all four capacity sub-experiments. It is the same configuration as weight decay 0, so its results are those of the run `Weight_Decay_Sweep__wd_0`.
 - **Selection.** Configurations were compared on the validation set of the intermediate subset (thesis Chapter 5). Each script also evaluates its best checkpoint on the test set and appends the result to `runs/experiments_summary.csv`.
 
 The per-run training histories and plots are in [`results/`](../results/).
@@ -74,7 +73,6 @@ The scripts were first committed exactly as they were on the cluster. They were 
 - moved into one folder per experiment; the two split scripts renamed (`create_fixed_split.py`, `create_final_split.py`); a Greek capital Beta (Β) in the launcher names replaced by a Latin B;
 - docstrings added to every Python file, and the Δ symbols in the model comments written out in English;
 - the scripts of three runs were not among the saved files (`Batch_Size_Sweep__Batch12`, `LR_Sweep__AdamW_diffLR_base2e-4`, `Weight_Decay_Sweep__wd_0`), and `04_batch_size` held a copy of the Past 40 / Future 5 script. These scripts were recreated from the neighbouring script of the same experiment by changing only the varied setting and the run name. Their learning rate and weight decay agree with the optimizer state stored in the checkpoints of these runs;
-- the launcher of `..._ffn512.py` called the file under an earlier name and now calls it by its current name;
 - the run name `Temporal_Contect_Sweep` in the Past 10 / Future 0 and Past 20 / Future 0 scripts corrected to `Temporal_Context_Sweep`, as in the third script of the experiment and in `experiments_summary.csv`.
 
 Apart from these changes, the executable code was not changed. This was verified by comparing the abstract syntax tree (AST) of every Python file before and after, with docstrings excluded, and the launchers byte by byte.
