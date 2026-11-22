@@ -26,6 +26,33 @@ The PyTorch version follows from the code and the saved checkpoint: the training
 
 FFmpeg and PowerShell are needed in addition for the `.ps1` script of step 00.
 
+## Docker
+
+The `Dockerfile` builds the environment of the code that ran on the dataLAB cluster (preprocessing step 10, training, evaluation and analysis) from the `training` group of `uv.lock`. On x86_64 the PyTorch wheels include CUDA, so the container can use an NVIDIA GPU of the host through the NVIDIA Container Toolkit.
+
+```bash
+docker build -t head-orientation .
+docker run --rm --gpus all --shm-size=8g \
+  -v /path/to/DERIVED_ET_IMU_head_mounted:/share/e12507305/preprocessed/DERIVED_ET_IMU_head_mounted \
+  -v "$PWD/runs":/workspace/training/runs \
+  head-orientation \
+  python experiments/08_final_model/train_final_checkpoint.py
+```
+
+- The data folder is mounted at the original path of the cluster, so the scripts run unchanged.
+- The container starts in `training/` with this folder on the Python path. The run folders are written to `runs/` and appear in the mounted folder of the host.
+- `--shm-size` is needed because the data loaders use six worker processes.
+- torchvision downloads the ImageNet weights of ResNet-50 at the first run, so the container needs internet access.
+
+Without the data, the appendix figures can be redrawn in the container; they are written to `figures_rebuild/appendix_figures/` on the host:
+
+```bash
+docker run --rm -v "$PWD/figures_rebuild":/workspace/figures_rebuild head-orientation bash -c \
+  "mkdir -p ../figures_rebuild/runs && cp -R ../results/*/* ../figures_rebuild/runs/ && cd ../figures_rebuild && python ../analysis/generate_appendix_rmse_plots.py"
+```
+
+The image was tested on CPU: the build, the appendix figures, and two epochs of training and evaluation with the functions of the final script on synthetic data in the expected layout. Training on a GPU inside the container has not been tested.
+
 ## Version of the shared modules
 
 The modules shared by the training scripts (`dataset_win31.py`, `model_resnet_transformer.py`) received small additions while the experiments were running. The repository contains their latest version, which is the one used to train the final model.

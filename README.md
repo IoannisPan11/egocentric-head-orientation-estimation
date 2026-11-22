@@ -106,6 +106,8 @@ uv sync --all-groups            # both
 source .venv/bin/activate
 ```
 
+Alternatively, the `Dockerfile` provides the environment of the training, evaluation and analysis code, with CUDA support; see [`docs/reproducibility.md`](docs/reproducibility.md#docker).
+
 The environment is a reconstruction; see [`docs/reproducibility.md`](docs/reproducibility.md#environment). Without the data, the appendix figures can be redrawn from [`results/`](results/) as described in [`analysis/README.md`](analysis/README.md#appendix-figures).
 
 ## Data availability
@@ -120,7 +122,20 @@ The weights of the final model will be provided as a **GitHub Release** asset.
 
 ## Citation
 
-If you use this code, please cite the thesis. A `CITATION.cff` file is provided, and the link to the thesis will be added after publication.
+If you use this code, please cite the thesis:
+
+> Panagiotopoulos, I. (2026). *Deep Learning-Based Head Orientation Change Estimation from First-Person RGB Video Data* [Master's thesis, National Technical University of Athens].
+
+```bibtex
+@mastersthesis{panagiotopoulos2026head,
+  author = {Panagiotopoulos, Ioannis},
+  title  = {Deep Learning-Based Head Orientation Change Estimation from First-Person RGB Video Data},
+  school = {National Technical University of Athens},
+  year   = {2026}
+}
+```
+
+The same information is in [`CITATION.cff`](CITATION.cff). The link to the thesis will be added after publication.
 
 ## License
 

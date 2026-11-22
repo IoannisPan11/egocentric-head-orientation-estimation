@@ -1,0 +1,11 @@
+.git
+.venv
+**/__pycache__
+**/.ipynb_checkpoints
+**/.DS_Store
+*.pth
+*.pt
+data
+runs
+training/runs
+figures_rebuild
