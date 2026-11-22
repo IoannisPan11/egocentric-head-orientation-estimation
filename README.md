@@ -118,7 +118,31 @@ No raw or derived data are included in this repository. [`docs/data_availability
 
 ## Pretrained model
 
-The weights of the final model will be provided as a **GitHub Release** asset.
+The weights of the final model are provided as an asset of the GitHub Release [v1.0.0](https://github.com/IoannisPan11/egocentric-head-orientation-estimation/releases/tag/v1.0.0):
+
+- File: [`best_model.pth`](https://github.com/IoannisPan11/egocentric-head-orientation-estimation/releases/download/v1.0.0/best_model.pth) (275 MB), the checkpoint of the best epoch (5) of `train_final_checkpoint.py`
+- SHA-256: `8e7d0b0d7b55ffbb2305a9de5e12413c699bc64de3a9b66227ce5468e46928fe`
+- Contents: `model_state_dict`, `optimizer_state_dict`, `epoch` and `best_val_loss`
+
+The model is loaded from the `training/` folder, with this folder on the Python path:
+
+```python
+import torch
+from model_resnet_transformer import ResNetTransformerRegressor
+
+model = ResNetTransformerRegressor(d_model=64, nhead=4, num_layers=2, dim_feedforward=512,
+                                   dropout=0.2, pretrained_backbone=False, use_cls=True, out_dim=4)
+checkpoint = torch.load("best_model.pth", map_location="cpu", weights_only=True)
+model.load_state_dict(checkpoint["model_state_dict"])
+model.eval()
+
+with torch.no_grad():
+    out = model(frames)  # frames: (batch, 46, 3, 512, 512)
+d_roll, d_pitch = out[:, 0] * 180, out[:, 1] * 180
+d_yaw = torch.rad2deg(torch.atan2(out[:, 2], out[:, 3]))
+```
+
+The input is a window of 46 consecutive 512 × 512 RGB frames (40 past frames, the current frame and 5 future frames), scaled to [0, 1] and normalised with the ImageNet mean and standard deviation, as in `train_final_checkpoint.py`. The output is the change in roll, pitch and yaw, in degrees, between the last past frame and the current frame.
 
 ## Citation
 
@@ -143,4 +167,4 @@ The code is released under the MIT License (see [`LICENSE`](LICENSE)). This lice
 
 ## Acknowledgments
 
-I would like to thank my supervisor, Prof. Anastasios Doulamis (NTUA), for the supervision and support throughout this thesis. I am also grateful to Prof. Ioannis Giannopoulos and Dr. Markus Kattenbeck (TU Wien), who proposed the research topic, provided the data, and offered scientific guidance during my Erasmus+ stay at TU Wien. Computational resources were provided by the TU Wien dataLAB.
+I would like to thank my supervisor, Prof. Anastasios Doulamis (NTUA), for the supervision and support throughout this thesis. I am also grateful to Prof. Ioannis Giannopoulos and Dr. Markus Kattenbeck (TU Wien), who proposed the research topic, provided the data, and offered scientific guidance during my Erasmus+ stay at TU Wien. Computational resources were provided by TU Wien: a workstation of the Spatial Human-Computer Interaction Lab for the preprocessing, and the dataLAB GPU cluster for the training and evaluation.

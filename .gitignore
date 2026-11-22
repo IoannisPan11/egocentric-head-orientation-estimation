@@ -14,5 +14,8 @@ __pycache__/
 # Data are not part of this repository
 data/
 
+# Output folders of new training runs (the recorded runs are in results/)
+runs/
+
 # Figures redrawn from results/ (see analysis/README.md)
 figures_rebuild/
