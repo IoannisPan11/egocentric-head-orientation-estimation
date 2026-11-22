@@ -43,6 +43,8 @@ results/
 | `plot_val_mean_rmse.png`, `plot_val_mean_mae.png`, `plot_val_mean_medae.png` | Validation Mean RMSE, MAE and MedAE per epoch. |
 | `experiments_summary.csv` | One row per run: best epoch, test loss, and test MAE, RMSE and MedAE per angle and mean. Each script appends its row after evaluating its best checkpoint on the test set. |
 
+The loss curves of the runs selected in Chapter 5 are thesis Figures 7–12: `plot_train_vs_val_loss.png` of `Loss_Function__L1_Beta_0.1` (Figure 7), `IMU_Angle_Experiment__Window_31` (Figure 8), `Temporal_Context_Sweep__Past40_Future5` (Figure 9), `Batch_Size_Sweep__Batch12` (Figure 10), `Dropout_Sweep__1e-4_dropout02` (Figure 11) and `Weight_Decay_Sweep__wd_0` (Figure 12).
+
 The best epoch is the epoch with the lowest validation loss. Training stopped when the validation loss did not improve for 4 epochs, so every history ends 4 epochs after the best epoch.
 
 ## Results of the experiments
@@ -50,8 +52,8 @@ The best epoch is the epoch with the lowest validation loss. Training stopped wh
 All values are validation metrics in degrees at the best epoch, computed from the `history.csv` files, on the intermediate subset (9 / 2 / 2 recordings). Each block corresponds to one table of Chapter 5.
 
 - The experiments are sequential (see [`training/README.md`](../training/README.md#how-the-experiments-were-run)).
-- **(ref.)** marks the reference configuration of a block. It was not trained again; its run belongs to an earlier step, and its folder is given in the table.
-- The configuration selected in each block is in **bold**.
+- **(ref.)** marks the reference configuration of a block: the configuration selected in the previous block. It was not trained again, and the table gives the folder of its run. Block 1 has no previous block; its reference, the initial baseline with the Geodesic loss, was trained in this block.
+- The configuration selected in each block is in **bold**. As in the thesis, configurations were compared by Mean RMSE first and then by Mean MAE and Mean MedAE. Where these differed by only 0.001°, the number of epochs to the best epoch and the model complexity were also taken into account. Sections 5.2–5.8 of the thesis give the reasoning for each block.
 - The no-change reference on this validation set is a Mean RMSE of 0.845° (thesis Table 7).
 
 | Experiment | Configuration | Run folder | Best epoch | RMSE roll | RMSE pitch | RMSE yaw | Mean RMSE | Mean MAE | Mean MedAE |

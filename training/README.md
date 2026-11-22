@@ -20,7 +20,7 @@ The target of every window is the orientation change between the previous and th
 
 ## How the experiments were run
 
-The experiments are **sequential**: each step varies one factor, and the configuration selected in a step is the reference of the next step. That reference was therefore not trained again; its run belongs to the previous step. For example, the Smooth L1 loss with β = 0.1 won the loss-function step, and this run (nearest-neighbour labels) is also the NN reference of the IMU-angle step.
+The experiments are **sequential**: each step varies one factor, and the configuration selected in a step is the reference of the next step. That reference was therefore not trained again; its run belongs to the previous step. For example, the Smooth L1 loss with β = 0.1 won the loss-function step, and this run (nearest-neighbour labels) is also the NN reference of the IMU-angle step. Only step 1 has no previous step: its reference, the initial baseline with the Geodesic loss, was trained together with the candidates.
 
 All experiments use the intermediate subset (`fixed_split.json`). The final model was then retrained on the full split (`final_split.json`).
 
@@ -34,7 +34,7 @@ All experiments use the intermediate subset (`fixed_split.json`). The final mode
 
 | Step | Folder | Section | Varied | Reference (run of the previous step) | Selected |
 |---|---|---|---|---|---|
-| 1 | `01_loss_function` | 5.2 | Geodesic, Smooth L1 β = 0.05, β = 0.1 | Geodesic (baseline configuration) | Smooth L1, β = 0.1 |
+| 1 | `01_loss_function` | 5.2 | Smooth L1 β = 0.05, β = 0.1 | Geodesic: `Loss_Function__Geodesic` (initial baseline, trained in this step) | Smooth L1, β = 0.1 |
 | 2 | `02_imu_angle_aggregation` | 5.3 | Window 11, 21, 31 | NN: `Loss_Function__L1_Beta_0.1` | Window 31 |
 | 3 | `03_temporal_context` | 5.4 | Past 10 / Future 0, Past 20 / Future 0, Past 40 / Future 5 | Past 20 / Future 5: `IMU_Angle_Experiment__Window_31` | Past 40 / Future 5 |
 | 4 | `04_batch_size` | 5.5 | 12 | 24: `Temporal_Context_Sweep__Past40_Future5` | 12 |
@@ -48,7 +48,7 @@ All experiments use the intermediate subset (`fixed_split.json`). The final mode
 Notes on the table:
 
 - **Step 3.** The Past 40 / Future 5 run uses batch size 8 with gradient accumulation over 3 steps, so its effective batch size is 24, the same as in all earlier runs.
-- **Selection.** Configurations were compared on the validation set of the intermediate subset (thesis Chapter 5). Each script also evaluates its best checkpoint on the test set and appends the result to `runs/experiments_summary.csv`.
+- **Selection.** Configurations were compared on the validation set of the intermediate subset by Mean RMSE, then by Mean MAE and Mean MedAE, also taking into account the number of epochs to the best epoch and the model complexity (thesis Chapter 5; see [`results/README.md`](../results/README.md#results-of-the-experiments)). Each script also evaluates its best checkpoint on the test set and appends the result to `runs/experiments_summary.csv`.
 
 The per-run training histories and plots are in [`results/`](../results/).
 

@@ -50,6 +50,8 @@ The scripts run in numerical order. Each script starts with a docstring that des
 
 > **Step 10 ran on a different machine.** Steps 00–09 ran on the Windows workstation. Step 10 ran on the TU Wien dataLAB cluster as a SLURM job (`sbatch 10_crop_and_resize_frames.sh`), after the frames and the `paired_frames.csv` files had been uploaded there, and its output is what the training code reads.
 
+Step 09 was run with `--half_window` 5, 10 and 15, and its outputs were saved as `paired_frames11.csv`, `paired_frames21.csv` and `paired_frames31.csv`. These are the label files of the Window 11, 21 and 31 runs; their nearest-sample columns are the same in all three files (see [`docs/data_availability.md`](../docs/data_availability.md#derived-data-input-of-the-training)).
+
 Other folders in `et_head_mounted/`:
 
 - `diagnostics/check_label_differences.py`: prints the typical frame-to-frame change of the labels in one recording. It is a quick check, not a pipeline step.

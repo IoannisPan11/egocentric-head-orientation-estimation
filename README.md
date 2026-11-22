@@ -81,7 +81,6 @@ The *no-change* reference assumes zero head motion between consecutive frames. T
 │   └── experiments/       # One folder per experiment (Sections 5.2–5.9 of the thesis)
 ├── analysis/              # Target-distribution analysis and appendix figures
 ├── results/               # Training histories and metrics of every run (no model weights)
-├── docker/                # Container definition for the training/evaluation code
 └── docs/                  # Reproducibility notes, data availability, figures of the READMEs
 ```
 
@@ -94,7 +93,20 @@ The **executable code is the code that was run** for the thesis; it has not been
 - **Preprocessing** ran on a Windows workstation at TU Wien. The scripts contain the original local paths.
 - **Frame resizing, training, and evaluation** ran on the TU Wien **dataLAB** cluster (SLURM, NVIDIA A100). The original SLURM launch scripts are included.
 
-Because the scripts contain hard-coded paths of the original machines, the Docker setup mounts the data at the original locations instead of modifying the code. See [`docs/reproducibility.md`](docs/reproducibility.md) for details. It also covers what can and cannot be reproduced exactly (e.g., GPU non-determinism).
+The scripts contain the hard-coded paths of the original machines. [`docs/reproducibility.md`](docs/reproducibility.md) explains how to run them elsewhere and what can and cannot be reproduced exactly (e.g., GPU non-determinism).
+
+## Installation
+
+The environment is managed with [uv](https://docs.astral.sh/uv/) and uses Python 3.11 (`.python-version`). `pyproject.toml` and `uv.lock` define one dependency group for the preprocessing and one for the training, evaluation and analysis:
+
+```bash
+uv sync --group training        # training, evaluation and analysis (PyTorch 2.5.1, torchvision 0.20.1)
+uv sync --group preprocessing   # preprocessing (pandas, pyarrow, OpenCV)
+uv sync --all-groups            # both
+source .venv/bin/activate
+```
+
+The environment is a reconstruction; see [`docs/reproducibility.md`](docs/reproducibility.md#environment). Without the data, the appendix figures can be redrawn from [`results/`](results/) as described in [`analysis/README.md`](analysis/README.md#appendix-figures).
 
 ## Data availability
 

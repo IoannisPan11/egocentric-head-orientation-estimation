@@ -45,14 +45,14 @@ For each world_timestamps.csv:
             • min FPS
             • max FPS
             • std FPS
-3) Compute inter-frame interval statistics (Δt):
-      - mean Δt
-      - median Δt
-      - std Δt
-      - min Δt
-      - max Δt
+3) Compute inter-frame interval statistics (dt):
+      - mean dt
+      - median dt
+      - std dt
+      - min dt
+      - max dt
 4) Detect abnormal gaps:
-      - Count intervals where Δt > GAP_THRESH_S
+      - Count intervals where dt > GAP_THRESH_S
 5) Aggregate all metrics into a structured summary table.
 
 Methodological Rationale
@@ -60,7 +60,7 @@ Methodological Rationale
       • local frame drops
       • unstable capture rates
       • temporal jitter
-- Δt statistics detect:
+- dt statistics detect:
       • irregular frame spacing
       • recording interruptions
       • pipeline corruption
