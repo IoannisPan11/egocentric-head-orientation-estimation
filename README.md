@@ -43,7 +43,9 @@ Mobile eye-tracking glasses record first-person video. Head orientation, however
 
 ### Model architecture
 
-![CNN–Transformer architecture: a ResNet-50 encodes each frame, a Transformer encoder with a CLS token models the sequence, and a regression head outputs four values](docs/figures/model_architecture.png)
+<p align="center">
+  <img src="docs/figures/model_architecture.png" alt="CNN–Transformer architecture: a ResNet-50 encodes each frame, a Transformer encoder with a CLS token models the sequence, and a regression head outputs four values from the CLS output" width="480">
+</p>
 
 *CNN–Transformer architecture (thesis Figure 5). The IMU is used only to build the training targets and is never a model input.*
 

@@ -95,5 +95,5 @@ All training scripts set the random seed to 42 for Python, NumPy and PyTorch. Tr
 | Output | Reproducible without the data | How |
 |---|---|---|
 | Training histories and metrics of every run (thesis Chapter 5) | Yes, as recorded | [`results/`](../results/) |
-| Appendix figures A.1–A.12 | Yes, redrawn from the histories | [`analysis/README.md`](../analysis/README.md#appendix-figures) |
+| Appendix figures B.1–B.12 | Yes, redrawn from the histories | [`analysis/README.md`](../analysis/README.md#appendix-figures) |
 | Preprocessing, training, evaluation, no-change reference | No, requires the data | — |

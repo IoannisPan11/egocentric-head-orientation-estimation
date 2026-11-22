@@ -2,18 +2,18 @@
 generate_appendix_rmse_plots.py
 
 Draws the validation Mean RMSE per epoch of all configurations of each experiment, one
-figure per experiment, as in Appendix A of the thesis.
+figure per experiment, as in Appendix B of the thesis.
 
-Thesis      : Figures A.1-A.12 (Appendix A)
+Thesis      : Figures B.1-B.12 (Appendix B)
 Run on      : TU Wien dataLAB cluster, after the training runs
 Input       : `runs/<run folder>/history.csv`, as written by the training scripts
-Output      : `appendix_figures/figure_A<n>_<experiment>_rmse_evolution.png` (300 dpi)
+Output      : `appendix_figures/figure_B<n>_<experiment>_rmse_evolution.png` (300 dpi)
 
 What it does
 - For each experiment, reads the `val_rmse_mean_deg` column of the runs that the thesis
   compares in the corresponding table of Chapter 5. As there, the reference configuration
   of an experiment is a run of the previous step; for example, "Nearest Neighbor" in
-  Figure A.2 is the run `Loss_Function__L1_Beta_0.1`.
+  Figure B.2 is the run `Loss_Function__L1_Beta_0.1`.
 - Draws longer curves first, so that shorter curves stay visible on top.
 - Saves one figure per experiment. The figures used in the thesis are in `appendix_figures/`.
 
@@ -104,7 +104,7 @@ def plot_rmse_curves(runs: dict[str, Path], title: str, output_file: str) -> Non
 
 
 # =========================================================
-# Figure A.1 - Loss Function experiment
+# Figure B.1 - Loss Function experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -113,12 +113,12 @@ plot_rmse_curves(
         "Smooth L1 loss (β = 0.1)": BASE_DIR / "Loss_Function__L1_Beta_0.1" / "history.csv",
     },
     title="Loss Function Experiment",
-    output_file="figure_A1_loss_function_rmse_evolution.png",
+    output_file="figure_B1_loss_function_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.2 - IMU-angle Aggregation experiment
+# Figure B.2 - IMU-angle Aggregation experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -128,12 +128,12 @@ plot_rmse_curves(
         "Window 31": BASE_DIR / "IMU_Angle_Experiment__Window_31" / "history.csv",
     },
     title="IMU-Angle Aggregation Experiment",
-    output_file="figure_A2_imu_angle_aggregation_rmse_evolution.png",
+    output_file="figure_B2_imu_angle_aggregation_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.3 - Temporal Context experiment
+# Figure B.3 - Temporal Context experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -143,12 +143,12 @@ plot_rmse_curves(
         "Past 40 - Future 5": BASE_DIR / "Temporal_Context_Sweep__Past40_Future5" / "history.csv",
     },
     title="Temporal Context Experiment",
-    output_file="figure_A3_temporal_context_rmse_evolution.png",
+    output_file="figure_B3_temporal_context_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.4 - Batch Size experiment
+# Figure B.4 - Batch Size experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -156,12 +156,12 @@ plot_rmse_curves(
         "Batch size = 24": BASE_DIR / "Temporal_Context_Sweep__Past40_Future5" / "history.csv",
     },
     title="Batch Size Experiment",
-    output_file="figure_A4_batch_size_rmse_evolution.png",
+    output_file="figure_B4_batch_size_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.5 - Learning Rate experiment
+# Figure B.5 - Learning Rate experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -171,12 +171,12 @@ plot_rmse_curves(
         "3 × 10⁻⁴": BASE_DIR / "LR_Sweep__AdamW_diffLR_base3e-4" / "history.csv",
     },
     title="Learning Rate Experiment",
-    output_file="figure_A5_learning_rate_rmse_evolution.png",
+    output_file="figure_B5_learning_rate_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.6 - Dropout experiment
+# Figure B.6 - Dropout experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -186,12 +186,12 @@ plot_rmse_curves(
         "0.2": BASE_DIR / "Dropout_Sweep__1e-4_dropout02" / "history.csv",
     },
     title="Dropout Experiment",
-    output_file="figure_A6_dropout_rmse_evolution.png",
+    output_file="figure_B6_dropout_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.7 - Weight Decay experiment
+# Figure B.7 - Weight Decay experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -201,12 +201,12 @@ plot_rmse_curves(
         "0.05": BASE_DIR / "Weight_Decay_Sweep__wd_005" / "history.csv",
     },
     title="Weight Decay Experiment",
-    output_file="figure_A7_weight_decay_rmse_evolution.png",
+    output_file="figure_B7_weight_decay_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.8 - Gradient Clipping experiment
+# Figure B.8 - Gradient Clipping experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -216,12 +216,12 @@ plot_rmse_curves(
         "5.0": BASE_DIR / "Gradient_Clipping_Sweep__gc_5" / "history.csv",
     },
     title="Gradient Clipping Experiment",
-    output_file="figure_A8_gradient_clipping_rmse_evolution.png",
+    output_file="figure_B8_gradient_clipping_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.9 - Embedding Dimension experiment
+# Figure B.9 - Embedding Dimension experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -231,12 +231,12 @@ plot_rmse_curves(
         "256": BASE_DIR / "Architecture_Sweep__dmodel_256" / "history.csv",
     },
     title="Embedding Dimension Experiment",
-    output_file="figure_A9_embedding_dimension_rmse_evolution.png",
+    output_file="figure_B9_embedding_dimension_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.10 - Transformer Encoder Layers experiment
+# Figure B.10 - Transformer Encoder Layers experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -246,11 +246,11 @@ plot_rmse_curves(
         "4 layers": BASE_DIR / "Architecture_Sweep__layers_4" / "history.csv",
     },
     title="Transformer Encoder Layers Experiment",
-    output_file="figure_A10_transformer_layers_rmse_evolution.png",
+    output_file="figure_B10_transformer_layers_rmse_evolution.png",
 )
 
 # =========================================================
-# Figure A.11 - Attention Heads experiment
+# Figure B.11 - Attention Heads experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -259,12 +259,12 @@ plot_rmse_curves(
         "8 attention heads": BASE_DIR / "Architecture_Sweep__head_8" / "history.csv",
     },
     title="Attention Heads Experiment",
-    output_file="figure_A11_attention_heads_rmse_evolution.png",
+    output_file="figure_B11_attention_heads_rmse_evolution.png",
 )
 
 
 # =========================================================
-# Figure A.12 - Feed-Forward Dimension experiment
+# Figure B.12 - Feed-Forward Dimension experiment
 # =========================================================
 plot_rmse_curves(
     runs={
@@ -274,5 +274,5 @@ plot_rmse_curves(
         "FFN dimension = 2048": BASE_DIR / "Architecture_Sweep__ffn_2048" / "history.csv",
     },
     title="Feed-Forward Dimension Experiment",
-    output_file="figure_A12_feed_forward_dimension_rmse_evolution.png",
+    output_file="figure_B12_feed_forward_dimension_rmse_evolution.png",
 )

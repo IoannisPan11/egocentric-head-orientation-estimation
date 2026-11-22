@@ -1,13 +1,13 @@
 # Analysis
 
-This folder contains two scripts that are not part of training: the analysis of the prediction targets with the no-change reference, and the figures of Appendix A of the thesis.
+This folder contains two scripts that are not part of training: the analysis of the prediction targets with the no-change reference, and the figures of Appendix B of the thesis.
 
 | File | Purpose | Thesis |
 |---|---|---|
 | `analyze_target_distribution.py` | Statistics of the frame-to-frame orientation changes, and the error of the no-change reference that assumes zero head motion | Table 4, Table 7 |
 | `run_target_distribution.sh` | Launcher of the script above on the dataLAB cluster | |
-| `generate_appendix_rmse_plots.py` | Validation Mean RMSE per epoch of all configurations of each experiment | Figures A.1–A.12 |
-| `appendix_figures/` | The twelve figures as used in the thesis | Appendix A |
+| `generate_appendix_rmse_plots.py` | Validation Mean RMSE per epoch of all configurations of each experiment | Figures B.1–B.12 |
+| `appendix_figures/` | The twelve figures as used in the thesis | Appendix B |
 
 ## Target distribution and no-change reference
 
@@ -32,10 +32,10 @@ It needs the paired CSV files of preprocessing step 09 under the original data p
 `generate_appendix_rmse_plots.py` reads the `history.csv` of every run from `runs/<run folder>/`, the output folder of the training scripts, and draws one figure per experiment into `appendix_figures/`. Each figure contains the same configurations as the corresponding table of Chapter 5, including the reference run of the previous step.
 
 <p align="center">
-  <img src="appendix_figures/figure_A3_temporal_context_rmse_evolution.png" alt="Validation Mean RMSE per epoch of the four temporal-context configurations" width="560">
+  <img src="appendix_figures/figure_B3_temporal_context_rmse_evolution.png" alt="Validation Mean RMSE per epoch of the four temporal-context configurations" width="560">
 </p>
 
-*Figure A.3: validation Mean RMSE per epoch of the temporal-context experiment.*
+*Figure B.3: validation Mean RMSE per epoch of the temporal-context experiment.*
 
 The script runs from the folder that contains `runs/`. After new training runs, this is the `training/` folder:
 
@@ -58,5 +58,7 @@ The figures are written to `figures_rebuild/appendix_figures/`. The folder `figu
 ## Changes since the original files
 
 - Docstrings were added to both Python scripts.
-- `generate_appendix_rmse_plots.py` reads three runs under their current names (`Temporal_Context_Sweep__Past10_Future0`, `Temporal_Context_Sweep__Past20_Future0`, `Batch_Size_Sweep__Batch12`; see [`results/README.md`](../results/README.md#changes-since-the-original-files)). Apart from these five paths, the executable code is unchanged, which was verified by comparing the abstract syntax tree (AST) before and after.
+- `generate_appendix_rmse_plots.py` reads three runs under their current names (`Temporal_Context_Sweep__Past10_Future0`, `Temporal_Context_Sweep__Past20_Future0`, `Batch_Size_Sweep__Batch12`; see [`results/README.md`](../results/README.md#changes-since-the-original-files)).
+- The appendix of the final thesis is Appendix B, so the output files are now named `figure_B<n>_…` instead of `figure_A<n>_…`, and the figures in `appendix_figures/` were renamed in the same way.
+- Apart from these five paths and the twelve output file names, the executable code of `generate_appendix_rmse_plots.py` is unchanged, which was verified by comparing the abstract syntax tree (AST) before and after.
 - Jupyter backup copies of the figures were not included.
